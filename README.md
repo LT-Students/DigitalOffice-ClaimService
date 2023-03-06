@@ -1,2 +1,2 @@
 # DigitalOffice-ClaimService
-DigitalOffice-EventService
+DigitalOffice-ClaimService

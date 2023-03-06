@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\ClaimService.Data.Provider\ClaimService.Data.Provider.csproj" />
+    <ProjectReference Include="..\ClaimService.Models.Db\ClaimService.Models.Db.csproj" />
+  </ItemGroup>
+
+</Project>
