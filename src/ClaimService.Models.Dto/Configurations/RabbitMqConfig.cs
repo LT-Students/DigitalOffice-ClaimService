@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LT.DigitalOffice.Kernel.BrokerSupport.Configurations;
 
-namespace LT.DigitalOffice.ClaimService.Models.Dto.Configurations
+namespace LT.DigitalOffice.ClaimService.Models.Dto.Configurations;
+
+public class RabbitMqConfig : BaseRabbitMqConfig
 {
-	internal class RabbitMqConfig
-	{
-	}
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace ClaimService.Data.Provider.MsSql.Ef
+namespace ClaimService.Data.Provider.MsSql.Ef;
+
+public class ClaimServiceDbContext : DbContext, IDataProvider
 {
-	internal class CalimServiceDbContext
+	public ClaimServiceDbContext(DbContextOptions<ClaimServiceDbContext> options)
+		: base(options)
 	{
 	}
 }
