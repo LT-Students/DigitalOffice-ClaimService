@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using ClaimService.Data.Provider.MsSql.Ef;
@@ -26,125 +26,124 @@ namespace ClaimService;
 
 public class Startup : BaseApiInfo
 {
-	private readonly BaseServiceInfoConfig _serviceInfoConfig;
-	private readonly RabbitMqConfig _rabbitMqConfig;
-	public const string CorsPolicyName = "LtDoCorsPolicy";
-	public IConfiguration Configuration { get; }
+  private readonly BaseServiceInfoConfig _serviceInfoConfig;
+  private readonly RabbitMqConfig _rabbitMqConfig;
+  public const string CorsPolicyName = "LtDoCorsPolicy";
+  public IConfiguration Configuration { get; }
 
-	private void ConfigureMassTransit(IServiceCollection services)
-	{
-		(string username, string password) = RabbitMqCredentialsHelper
-			.Get(_rabbitMqConfig, _serviceInfoConfig);
+  private void ConfigureMassTransit(IServiceCollection services)
+  {
+    (string username, string password) = RabbitMqCredentialsHelper
+      .Get(_rabbitMqConfig, _serviceInfoConfig);
 
-		services.AddMassTransit(busConfigurator =>
-		{
-			busConfigurator.UsingRabbitMq((context, cfg) =>
-			{
-				cfg.Host(_rabbitMqConfig.Host, "/", host =>
-				{
-					host.Username(username);
-					host.Password(password);
-				});
-			});
+    services.AddMassTransit(busConfigurator =>
+    {
+      busConfigurator.UsingRabbitMq((context, cfg) =>
+        {
+          cfg.Host(_rabbitMqConfig.Host, "/", host =>
+            {
+              host.Username(username);
+              host.Password(password);
+            });
+        });
+      busConfigurator.AddRequestClients(_rabbitMqConfig);
+    });
 
-			busConfigurator.AddRequestClients(_rabbitMqConfig);
-		});
+    services.AddMassTransitHostedService();
+  }
 
-		services.AddMassTransitHostedService();
-	}
+  public Startup(IConfiguration configuration)
+  {
+    Configuration = configuration;
 
-	public Startup(IConfiguration configuration)
-	{
-		Configuration = configuration;
+    _serviceInfoConfig = Configuration
+      .GetSection(BaseServiceInfoConfig.SectionName)
+      .Get<BaseServiceInfoConfig>();
 
-		_serviceInfoConfig = Configuration
-			.GetSection(BaseServiceInfoConfig.SectionName)
-			.Get<BaseServiceInfoConfig>();
+    _rabbitMqConfig = Configuration
+      .GetSection(BaseRabbitMqConfig.SectionName)
+      .Get<RabbitMqConfig>();
 
-		_rabbitMqConfig = Configuration
-			.GetSection(BaseRabbitMqConfig.SectionName)
-			.Get<RabbitMqConfig>();
+    Version = "1.0.0.0";
+    Description = "ClaimService is an API that intended to work with claims.";
+    StartTime = DateTime.UtcNow;
+    ApiName = $"LT Digital Office - {_serviceInfoConfig.Name}";
+  }
 
-		Version = "1.0.0.0";
-		Description = "ClaimService is an API that intended to work with claims.";
-		StartTime = DateTime.UtcNow;
-		ApiName = $"LT Digital Office - {_serviceInfoConfig.Name}";
-	}
+  public void ConfigureServices(IServiceCollection services)
+  {
+    services.AddCors(options =>
+    {
+      options.AddPolicy(
+        CorsPolicyName,
+        builder =>
+        {
+          builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+    });
 
-	public void ConfigureServices(IServiceCollection services)
-	{
-		services.AddCors(options =>
-		{
-			options.AddPolicy(
-				CorsPolicyName,
-				builder =>
-				{
-					builder
-					.AllowAnyOrigin()
-					.AllowAnyHeader()
-					.AllowAnyMethod();
-				});
-		});
+    string dbConnStr = ConnectionStringHandler.Get(Configuration);
 
-		string dbConnStr = ConnectionStringHandler.Get(Configuration);
+    services.AddDbContext<ClaimServiceDbContext>(options =>
+    {
+      options.UseSqlServer(dbConnStr);
+    });
 
-		services.AddDbContext<ClaimServiceDbContext>(options =>
-		{
-			options.UseSqlServer(dbConnStr);
-		});
+    services.AddHttpContextAccessor();
 
-		services.AddHttpContextAccessor();
+    services.AddHealthChecks()
+      .AddRabbitMqCheck()
+      .AddSqlServer(dbConnStr);
 
-		services.AddHealthChecks()
-			.AddRabbitMqCheck()
-			.AddSqlServer(dbConnStr);
+    services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
+    services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
+    services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
 
-		services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
-		services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
-		services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
+    services.AddBusinessObjects();
 
-		services.AddBusinessObjects();
+    ConfigureMassTransit(services);
 
-		ConfigureMassTransit(services);
+    services.AddControllers()
+      .AddJsonOptions(options =>
+      {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+      })
+      .AddNewtonsoftJson();
+  }
 
-		services.AddControllers()
-			.AddJsonOptions(options =>
-			{
-				options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-			})
-			.AddNewtonsoftJson();
-	}
+  public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+  {
+    app.UpdateDatabase<ClaimServiceDbContext>();
 
-	public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
-	{
-		app.UpdateDatabase<ClaimServiceDbContext>();
+    app.UseForwardedHeaders();
 
-		app.UseForwardedHeaders();
+    app.UseExceptionsHandler(loggerFactory);
 
-		app.UseExceptionsHandler(loggerFactory);
+    app.UseApiInformation();
 
-		app.UseApiInformation();
+    app.UseRouting();
 
-		app.UseRouting();
+    app.UseMiddleware<TokenMiddleware>();
 
-		app.UseMiddleware<TokenMiddleware>();
+    app.UseCors(CorsPolicyName);
 
-		app.UseCors(CorsPolicyName);
-
-		app.UseEndpoints(endpoints =>
-		{
-			endpoints.MapControllers().RequireCors(CorsPolicyName);
-			endpoints.MapHealthChecks($"/{_serviceInfoConfig.Id}/hc", new HealthCheckOptions
-			{
-				ResultStatusCodes = new Dictionary<HealthStatus, int>
-			{
-				{ HealthStatus.Unhealthy, 200 },
-				{ HealthStatus.Healthy, 200 },
-				{ HealthStatus.Degraded, 200 },
-			},
-				Predicate = check => check.Name != "masstransit-bus",
-				ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-			});
-		});
-	}
+    app.UseEndpoints(endpoints =>
+    {
+      endpoints.MapControllers().RequireCors(CorsPolicyName);
+      endpoints.MapHealthChecks($"/{_serviceInfoConfig.Id}/hc", new HealthCheckOptions
+      {
+        ResultStatusCodes = new Dictionary<HealthStatus, int>
+        {
+          { HealthStatus.Unhealthy, 200 },
+          { HealthStatus.Healthy, 200 },
+          { HealthStatus.Degraded, 200 },
+        },
+        Predicate = check => check.Name != "masstransit-bus",
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+      });
+    });
+  }
 }

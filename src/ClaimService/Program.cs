@@ -11,8 +11,8 @@ public class Program
   public static void Main(string[] args)
   {
     var configuration = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json")
-        .Build();
+      .AddJsonFile("appsettings.json")
+      .Build();
 
     string seqServerUrl = Environment.GetEnvironmentVariable("seqServerUrl");
     if (string.IsNullOrEmpty(seqServerUrl))
@@ -27,12 +27,12 @@ public class Program
     }
 
     Log.Logger = new LoggerConfiguration().ReadFrom
-        .Configuration(configuration)
-        .Enrich.WithProperty("Service", "ClaimService")
-        .WriteTo.Seq(
-            serverUrl: seqServerUrl,
-            apiKey: seqApiKey)
-        .CreateLogger();
+      .Configuration(configuration)
+      .Enrich.WithProperty("Service", "ClaimService")
+      .WriteTo.Seq(
+        serverUrl: seqServerUrl,
+        apiKey: seqApiKey)
+      .CreateLogger();
 
     try
     {
@@ -49,10 +49,10 @@ public class Program
   }
 
   public static IHostBuilder CreateHostBuilder(string[] args) =>
-          Host.CreateDefaultBuilder(args)
-              .UseSerilog()
-              .ConfigureWebHostDefaults(webBuilder =>
-              {
-                webBuilder.UseStartup<Startup>();
-              });
+    Host.CreateDefaultBuilder(args)
+    .UseSerilog()
+    .ConfigureWebHostDefaults(webBuilder =>
+    {
+      webBuilder.UseStartup<Startup>();
+    });
 }
