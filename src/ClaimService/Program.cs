@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -40,7 +40,7 @@ public class Program
     }
     catch (Exception exc)
     {
-      Log.Fatal(exc, "Can not properly start EventService.");
+      Log.Fatal(exc, "Can not properly start ClaimService.");
     }
     finally
     {
