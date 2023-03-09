@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\ClaimService.Data.Provider.MsSql.Ef\ClaimService.Data.Provider.MsSql.Ef.csproj" />
+    <ProjectReference Include="..\ClaimService.Data.Provider\ClaimService.Data.Provider.csproj" />
+    <ProjectReference Include="..\ClaimService.Data.Provider\ClaimService.Data.Provider.csproj" />
+    <ProjectReference Include="..\ClaimService.Models.Db\ClaimService.Models.Db.csproj" />
+    <ProjectReference Include="..\ClaimService.Models.Dto\ClaimService.Models.Dto.csproj" />
+  </ItemGroup>
+
+</Project>
