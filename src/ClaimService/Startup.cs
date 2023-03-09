@@ -31,27 +31,6 @@ public class Startup : BaseApiInfo
   public const string CorsPolicyName = "LtDoCorsPolicy";
   public IConfiguration Configuration { get; }
 
-  private void ConfigureMassTransit(IServiceCollection services)
-  {
-    (string username, string password) = RabbitMqCredentialsHelper
-      .Get(_rabbitMqConfig, _serviceInfoConfig);
-
-    services.AddMassTransit(busConfigurator =>
-    {
-      busConfigurator.UsingRabbitMq((context, cfg) =>
-        {
-          cfg.Host(_rabbitMqConfig.Host, "/", host =>
-            {
-              host.Username(username);
-              host.Password(password);
-            });
-        });
-      busConfigurator.AddRequestClients(_rabbitMqConfig);
-    });
-
-    services.AddMassTransitHostedService();
-  }
-
   public Startup(IConfiguration configuration)
   {
     Configuration = configuration;
@@ -104,7 +83,7 @@ public class Startup : BaseApiInfo
 
     services.AddBusinessObjects();
 
-    ConfigureMassTransit(services);
+    services.ConfigureMassTransit(_rabbitMqConfig);
 
     services.AddControllers()
       .AddJsonOptions(options =>
