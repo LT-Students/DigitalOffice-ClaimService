@@ -33,7 +33,7 @@ public class DbClaimChangeConfiguration : IEntityTypeConfiguration<DbClaimChange
 
     builder
       .HasOne(ch => ch.Template)
-      .WithOne(ct => ct.ClaimChange);
+      .WithMany(ct => ct.ClaimChanges);
 
     builder
       .HasOne(ch => ch.Claim)
