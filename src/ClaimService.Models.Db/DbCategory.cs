@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LT.DigitalOffice.ClaimService.Models.Db;
 
-public class DbClaimCategory
+public class DbCategory
 {
-  public const string TableName = "ClaimCategories";
+  public const string TableName = "Categories";
+
   public Guid Id { get; set; }
   public string Name { get; set; }
   public string Description { get; set; }
@@ -17,16 +18,16 @@ public class DbClaimCategory
   public Guid? ModifiedBy { get; set; }
   public DateTime? ModifiedAtUtc { get; set; }
 
-  public DbClaim Claim { get; set; }
-  public ICollection<DbClaimCategoryExecutor> Executors { get; set; }
+  public ICollection<DbClaim> Claims { get; set; }
+  public ICollection<DbCategoryExecutor> Executors { get; set; }
 }
 
-public class DbClaimCategoryConfiguration : IEntityTypeConfiguration<DbClaimCategory>
+public class DbClaimCategoryConfiguration : IEntityTypeConfiguration<DbCategory>
 {
-  public void Configure(EntityTypeBuilder<DbClaimCategory> builder)
+  public void Configure(EntityTypeBuilder<DbCategory> builder)
   {
     builder
-      .ToTable(DbClaimCategory.TableName);
+      .ToTable(DbCategory.TableName);
 
     builder
       .HasKey(t => t.Id);
@@ -36,7 +37,7 @@ public class DbClaimCategoryConfiguration : IEntityTypeConfiguration<DbClaimCate
       .WithOne(c => c.Category);
 
     builder
-      .HasOne(cc => cc.Claim)
+      .HasMany(cc => cc.Claims)
       .WithOne(c => c.Category);
   }
 }

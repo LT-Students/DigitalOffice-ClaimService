@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,7 +15,7 @@ public class DbChangeTemplate
   public Locale Locale { get; set; }
   public string Content { get; set; }
 
-  public DbClaimChange ClaimChange { get; set; }
+  public ICollection<DbClaimChange> ClaimChanges { get; set; }
 }
 
 public class DbChangeTemplateConfiguration : IEntityTypeConfiguration<DbChangeTemplate>
@@ -28,7 +29,7 @@ public class DbChangeTemplateConfiguration : IEntityTypeConfiguration<DbChangeTe
       .HasKey(t => t.Id);
 
     builder
-      .HasOne(ct => ct.ClaimChange)
+      .HasMany(ct => ct.ClaimChanges)
       .WithOne(ch => ch.Template);
   }
 }

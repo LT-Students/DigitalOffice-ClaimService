@@ -22,10 +22,10 @@ public class DbClaim
   public Guid? ModifiedBy { get; set; }
   public DateTime? ModifiedAtUtc { get; set; }
 
-  public DbClaimCategory Category { get; set; }
+  public DbCategory Category { get; set; }
   public ICollection<DbClaimFile> Files { get; set; }
   public ICollection<DbClaimImage> Images { get; set; }
-  public ICollection<DbComment> Comments { get; set; }
+  public ICollection<DbClaimComment> Comments { get; set; }
   public ICollection<DbClaimChange> Changes { get; set; }
 }
 
@@ -41,7 +41,7 @@ public class DbClaimConfiguration : IEntityTypeConfiguration<DbClaim>
 
     builder
       .HasOne(c => c.Category)
-      .WithOne(cc => cc.Claim);
+      .WithMany(cc => cc.Claims);
 
     builder
       .HasMany(c => c.Files)

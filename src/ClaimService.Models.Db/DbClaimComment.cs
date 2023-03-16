@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LT.DigitalOffice.ClaimService.Models.Db;
 
-public class DbComment
+public class DbClaimComment
 {
-  public const string TableName = "Comments";
+  public const string TableName = "ClaimComments";
 
   public Guid Id { get; set; }
   public string Content { get; set; }
@@ -20,12 +20,12 @@ public class DbComment
   public DbClaim Claim { get; set; }
 }
 
-public class DbCommentConfiguration : IEntityTypeConfiguration<DbComment>
+public class DbCommentConfiguration : IEntityTypeConfiguration<DbClaimComment>
 {
-  public void Configure(EntityTypeBuilder<DbComment> builder)
+  public void Configure(EntityTypeBuilder<DbClaimComment> builder)
   {
     builder
-      .ToTable(DbComment.TableName);
+      .ToTable(DbClaimComment.TableName);
 
     builder
       .HasKey(t => t.Id);
