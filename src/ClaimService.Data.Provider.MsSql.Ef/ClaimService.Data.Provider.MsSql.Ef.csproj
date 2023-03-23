@@ -7,8 +7,4 @@
     <ProjectReference Include="..\ClaimService.Models.Db\ClaimService.Models.Db.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>
