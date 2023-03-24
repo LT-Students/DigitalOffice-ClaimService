@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using LT.DigitalOffice.Kernel.Requests;
 using Microsoft.AspNetCore.Mvc;

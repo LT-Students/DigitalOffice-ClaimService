@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using ClaimService.Data.Provider;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Db;
@@ -23,8 +22,8 @@ public class ClaimRepository : IClaimRepository
   {
     if (!string.IsNullOrWhiteSpace(filter.searchSubString))
     {
-      dbClaims = dbClaims.Where(c => 
-      c.Content.Contains(filter.searchSubString) 
+      dbClaims = dbClaims.Where(c =>
+      c.Content.Contains(filter.searchSubString)
       || c.Name.Contains(filter.searchSubString));
     }
 
@@ -35,17 +34,17 @@ public class ClaimRepository : IClaimRepository
 
     if (filter.Urgency.HasValue)
     {
-      dbClaims = dbClaims.Where(c => c.Urgency== filter.Urgency.Value);
+      dbClaims = dbClaims.Where(c => c.Urgency == filter.Urgency.Value);
     }
 
     if (filter.Status.HasValue)
     {
-      dbClaims = dbClaims.Where(c => c.Status== filter.Status.Value);
+      dbClaims = dbClaims.Where(c => c.Status == filter.Status.Value);
     }
 
     if (filter.DeadLine.HasValue)
     {
-      dbClaims = dbClaims.Where(c => c.DeadLine== filter.DeadLine.Value);
+      dbClaims = dbClaims.Where(c => c.DeadLine == filter.DeadLine.Value);
     }
 
     if (filter.AuthorId.HasValue)
@@ -63,7 +62,7 @@ public class ClaimRepository : IClaimRepository
     return dbClaims;
   }
 
-  private IQueryable<DbClaim> CreateGetPredicate (
+  private IQueryable<DbClaim> CreateGetPredicate(
     GetClaimFilter filter,
     IQueryable<DbClaim> dbClaims)
   {
@@ -88,8 +87,8 @@ public class ClaimRepository : IClaimRepository
     return claim.Id;
   }
 
-  public async Task<(List<DbClaim> dbClaim, int totalcount)> FindAsync (
-    FindClaimFilter filter, 
+  public async Task<(List<DbClaim> dbClaim, int totalcount)> FindAsync(
+    FindClaimFilter filter,
     CancellationToken cancellationToken = default)
   {
     if (filter is null)
@@ -107,11 +106,11 @@ public class ClaimRepository : IClaimRepository
       await dbClaims.CountAsync(cancellationToken));
   }
 
-  public async Task<DbClaim> GetAsync (
-    GetClaimFilter filter, 
+  public async Task<DbClaim> GetAsync(
+    GetClaimFilter filter,
     CancellationToken cancellationToken = default)
   {
-    if(filter is null)
+    if (filter is null)
     {
       return default;
     }
@@ -121,10 +120,10 @@ public class ClaimRepository : IClaimRepository
     return await dbClaims.FirstOrDefaultAsync(c => c.Id == filter.Id, cancellationToken);
   }
 
-  public async Task<DbClaim> EditAsync (
-    Guid claimId, 
-    JsonPatchDocument<DbClaim> patch, 
-    Guid modifierId, 
+  public async Task<DbClaim> EditAsync(
+    Guid claimId,
+    JsonPatchDocument<DbClaim> patch,
+    Guid modifierId,
     CancellationToken cancellationToken = default)
   {
     DbClaim dbClaim = await _provider.Claims.FirstOrDefaultAsync(c => c.Id == claimId, cancellationToken);

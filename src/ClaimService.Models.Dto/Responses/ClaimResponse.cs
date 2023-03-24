@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using LT.DigitalOffice.ClaimService.Models.Dto.Models;
-using LT.DigitalOffice.Models.Broker.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace LT.DigitalOffice.ClaimService.Models.Dto.Responses;
 

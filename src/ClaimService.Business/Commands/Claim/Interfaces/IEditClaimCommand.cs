@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using LT.DigitalOffice.ClaimService.Models.Dto.Models;
@@ -15,5 +12,8 @@ namespace LT.DigitalOffice.ClaimService.Business.Commands.Claim.Interfaces;
 [AutoInject]
 public interface IEditClaimCommand
 {
-  Task<OperationResultResponse<ClaimInfo>> ExecuteAsync(Guid claimId, JsonPatchDocument<EditClaimRequest> request, CancellationToken cancellationToken);
+  Task<OperationResultResponse<ClaimInfo>> ExecuteAsync(
+    Guid claimId,
+    JsonPatchDocument<EditClaimRequest> path,
+    CancellationToken cancellationToken);
 }

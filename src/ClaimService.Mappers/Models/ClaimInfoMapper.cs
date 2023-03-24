@@ -8,19 +8,19 @@ namespace LT.DigitalOffice.ClaimService.Mappers.Models;
 
 public class ClaimInfoMapper : IClaimInfoMapper
 {
-  public List<ClaimInfo> Map (List<DbClaim> dbClaims)
+  public List<ClaimInfo> Map(List<DbClaim> dbClaims)
   {
-    return dbClaims?.Select (c => new ClaimInfo
+    return dbClaims?.Select(c => new ClaimInfo
     {
       Id = c.Id,
       Name = c.Name,
-      Content= c.Content,
-      CategoryId= c.CategoryId,
-      Status= c.Status,
+      Content = c.Content,
+      CategoryId = c.CategoryId,
+      Status = c.Status,
       Urgency = c.Urgency,
       DeadLine = c.DeadLine ?? null,
       CreatedBy = c.CreatedBy,
       CreatedAtUtc = c.CreatedAtUtc,
-    }).ToList ();
+    }).ToList();
   }
 }

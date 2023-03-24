@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ClaimClosed" xml:space="preserve">
+    <value>Claim Closed</value>
+  </data>
   <data name="FirstCharacterIsNotSpecialName" xml:space="preserve">
     <value>First symbol of name can not bbe a special symbol.</value>
   </data>
@@ -128,6 +131,9 @@
   </data>
   <data name="IncorrectClaimUrgency" xml:space="preserve">
     <value>Incorrect Claim Urgency.</value>
+  </data>
+  <data name="IncorrectUser" xml:space="preserve">
+    <value>Only claim creator can choose these statuses</value>
   </data>
   <data name="NotEmptyContent" xml:space="preserve">
     <value>Content musn't be empty.</value>

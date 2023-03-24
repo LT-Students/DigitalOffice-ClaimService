@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LT.DigitalOffice.ClaimService.Validation.Claim {
+namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
     using System;
     
     
@@ -39,7 +39,8 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LT.DigitalOffice.ClaimService.Validation.Claim.ClaimRequestValidatorResource", typeof(ClaimRequestValidatorResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LT.DigitalOffice.ClaimService.Validation.Claim.Resourses.ClaimRequestValidatorRes" +
+                            "ource", typeof(ClaimRequestValidatorResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +58,15 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Claim Closed.
+        /// </summary>
+        public static string ClaimClosed {
+            get {
+                return ResourceManager.GetString("ClaimClosed", resourceCulture);
             }
         }
         
@@ -93,6 +103,15 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim {
         public static string IncorrectClaimUrgency {
             get {
                 return ResourceManager.GetString("IncorrectClaimUrgency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only claim creator can choose these statuses.
+        /// </summary>
+        public static string IncorrectUser {
+            get {
+                return ResourceManager.GetString("IncorrectUser", resourceCulture);
             }
         }
         

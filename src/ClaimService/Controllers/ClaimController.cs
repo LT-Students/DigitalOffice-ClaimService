@@ -45,10 +45,10 @@ namespace LT.DigitalOffice.ClaimService.Controllers
     public async Task<OperationResultResponse<ClaimInfo>> EditAsync(
       [FromServices] IEditClaimCommand command,
       [FromQuery] Guid claimId,
-      [FromBody] JsonPatchDocument<EditClaimRequest> request,
+      [FromBody] JsonPatchDocument<EditClaimRequest> path,
       CancellationToken cancellationToken)
     {
-      return await command.ExecuteAsync(claimId, request, cancellationToken);
+      return await command.ExecuteAsync(claimId, path, cancellationToken);
     }
   }
 }

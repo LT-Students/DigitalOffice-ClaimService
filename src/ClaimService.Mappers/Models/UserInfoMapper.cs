@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LT.DigitalOffice.ClaimService.Mappers.Models.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Dto.Models;
 using LT.DigitalOffice.Models.Broker.Models;
@@ -11,7 +8,7 @@ namespace LT.DigitalOffice.ClaimService.Mappers.Models;
 
 public class UserInfoMapper : IUserInfoMapper
 {
-  public List<UserInfo> Map (List<UserData> usersData)
+  public List<UserInfo> Map(List<UserData> usersData)
   {
     return usersData?.Select(u => new UserInfo
     {

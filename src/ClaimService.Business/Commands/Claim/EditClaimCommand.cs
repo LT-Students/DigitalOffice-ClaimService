@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentValidation;
 using FluentValidation.Results;
 using LT.DigitalOffice.ClaimService.Business.Commands.Claim.Interfaces;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
@@ -15,7 +14,6 @@ using LT.DigitalOffice.ClaimService.Models.Dto.Models;
 using LT.DigitalOffice.ClaimService.Models.Dto.Requests;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Interfaces;
 using LT.DigitalOffice.Kernel.Extensions;
-using LT.DigitalOffice.Kernel.FluentValidationExtensions;
 using LT.DigitalOffice.Kernel.Helpers.Interfaces;
 using LT.DigitalOffice.Kernel.Responses;
 using Microsoft.AspNetCore.Http;
@@ -58,7 +56,7 @@ public class EditClaimCommand : IEditClaimCommand
     ValidationResult validationResult = await _validator.ValidateAsync((claimId, path));
     if (!validationResult.IsValid)
     {
-      _responseCreator.CreateFailureResponse<OperationResultResponse<ClaimInfo>>(
+      return _responseCreator.CreateFailureResponse<ClaimInfo>(
         HttpStatusCode.BadRequest,
         validationResult.Errors.ConvertAll(er => er.ErrorMessage));
     }
