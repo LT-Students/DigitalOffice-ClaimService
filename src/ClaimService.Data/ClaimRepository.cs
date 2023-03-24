@@ -129,7 +129,7 @@ public class ClaimRepository : IClaimRepository
   {
     DbClaim dbClaim = await _provider.Claims.FirstOrDefaultAsync(c => c.Id == claimId, cancellationToken);
 
-    if (dbClaim is null)
+    if (dbClaim is null || dbClaim.Status == ClaimStatus.Closed)
     {
       return default;
     }
