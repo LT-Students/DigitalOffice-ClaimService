@@ -61,8 +61,15 @@ public class EditClaimCommand : IEditClaimCommand
         validationResult.Errors.ConvertAll(er => er.ErrorMessage));
     }
 
-    return new OperationResultResponse<ClaimInfo>(
-      body: _claimInfoMapper.Map(new List<DbClaim>
-        { await _repository.EditAsync(claimId, _mapper.Map(path), senderId, cancellationToken) }).First());
+    DbClaim dbClaim = await _repository.EditAsync(claimId, _mapper.Map(path), senderId, cancellationToken);
+
+    if (dbClaim == null)
+    {
+      return _responseCreator.CreateFailureResponse<ClaimInfo>(HttpStatusCode.BadRequest);
+    }
+
+    _contextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+
+    return new OperationResultResponse<ClaimInfo>(body: _claimInfoMapper.Map(new List<DbClaim> { dbClaim }).First());
   }
 }

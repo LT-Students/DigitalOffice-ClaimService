@@ -99,8 +99,6 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
         { x => Enum.TryParse(x.value?.ToString(), out ClaimStatus res)
           && res == ClaimStatus.Closed || res == ClaimStatus.Returned ? dbClaim.CreatedBy == senderId : true
           ,ClaimRequestValidatorResource.IncorrectUser },
-        { x => Enum.TryParse(x.value?.ToString(), out ClaimStatus res) && dbClaim.Status == ClaimStatus.Closed
-          ,ClaimRequestValidatorResource.ClaimClosed }
       },
       CascadeMode.Stop);
 
@@ -149,6 +147,5 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
             await HandleInternalPropertyValidationAsync(op, context, dbClaim, senderId);
           }
         });
-    _claimRepository = claimRepository;
   }
 }
