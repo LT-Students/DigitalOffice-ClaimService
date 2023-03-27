@@ -1,6 +1,6 @@
 ﻿namespace LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 
-public enum ClaimUrgency
+public enum ClaimPriority
 {
   Minor,
   Magor,

@@ -22,9 +22,9 @@ public class CreateClaimRequestValidator : AbstractValidator<CreateClaimRequest>
       .MustAsync(async (x, _) => await categoryRepository.DoesExistAsync(x))
       .WithMessage("No such Category.");
 
-    RuleFor(request => request.Urgency)
+    RuleFor(request => request.Priority)
       .IsInEnum()
-      .WithMessage("No such Urgency");
+      .WithMessage("No such Priority");
 
     When(request => request.Deadline is not null,
       () =>

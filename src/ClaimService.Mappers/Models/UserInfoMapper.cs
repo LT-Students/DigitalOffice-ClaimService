@@ -10,7 +10,7 @@ public class UserInfoMapper : IUserInfoMapper
 {
   public List<UserInfo> Map(List<UserData> usersData)
   {
-    return usersData?.Select(u => new UserInfo
+    return usersData?.ConvertAll(u => new UserInfo
     {
       UserId = u.Id,
       FirstName = u.FirstName,

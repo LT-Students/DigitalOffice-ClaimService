@@ -98,11 +98,11 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incorrect Claim Urgency..
+        ///   Looks up a localized string similar to Incorrect Claim Priority..
         /// </summary>
-        public static string IncorrectClaimUrgency {
+        public static string IncorrectClaimPriority {
             get {
-                return ResourceManager.GetString("IncorrectClaimUrgency", resourceCulture);
+                return ResourceManager.GetString("IncorrectClaimPriority", resourceCulture);
             }
         }
         

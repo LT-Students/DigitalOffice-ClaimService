@@ -10,14 +10,14 @@ public class ClaimInfoMapper : IClaimInfoMapper
 {
   public List<ClaimInfo> Map(List<DbClaim> dbClaims)
   {
-    return dbClaims?.Select(c => new ClaimInfo
+    return dbClaims?.ConvertAll(c => new ClaimInfo
     {
       Id = c.Id,
       Name = c.Name,
       Content = c.Content,
       CategoryId = c.CategoryId,
       Status = c.Status,
-      Urgency = c.Urgency,
+      Priority = c.Priority,
       DeadLine = c.DeadLine ?? null,
       CreatedBy = c.CreatedBy,
       CreatedAtUtc = c.CreatedAtUtc,

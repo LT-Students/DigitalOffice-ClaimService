@@ -15,7 +15,7 @@ public class DbClaim
   public Guid CategoryId { get; set; }
   public string Content { get; set; }
   public ClaimStatus Status { get; set; }
-  public ClaimUrgency Urgency { get; set; }
+  public ClaimPriority Priority { get; set; }
   public DateTime? DeadLine { get; set; }
   public Guid CreatedBy { get; set; }
   public DateTime CreatedAtUtc { get; set; }

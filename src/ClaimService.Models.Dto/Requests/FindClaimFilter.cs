@@ -16,8 +16,8 @@ public record FindClaimFilter : BaseFindFilter
   [FromQuery(Name = "categoryId")]
   public Guid? CategoryId { get; set; }
 
-  [FromQuery(Name = "urgency")]
-  public ClaimUrgency? Urgency { get; set; }
+  [FromQuery(Name = "priority")]
+  public ClaimPriority? Priority { get; set; }
 
   [FromQuery(Name = "status")]
   public ClaimStatus? Status { get; set; }

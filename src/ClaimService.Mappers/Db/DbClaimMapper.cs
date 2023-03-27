@@ -19,7 +19,7 @@ public class DbClaimMapper : IDbClaimMapper
         CategoryId = request.CategoryId,
         Content = request.Content,
         Status = ClaimStatus.Created,
-        Urgency = request.Urgency.HasValue ? request.Urgency.Value : ClaimUrgency.Magor,
+        Priority = request.Priority.HasValue ? request.Priority.Value : ClaimPriority.Magor,
         DeadLine = request.Deadline,
         CreatedAtUtc = DateTime.UtcNow,
         CreatedBy = senderId

@@ -33,9 +33,9 @@ public class ClaimRepository : IClaimRepository
       dbClaims = dbClaims.Where(c => c.CategoryId == filter.CategoryId.Value);
     }
 
-    if (filter.Urgency.HasValue)
+    if (filter.Priority.HasValue)
     {
-      dbClaims = dbClaims.Where(c => c.Urgency == filter.Urgency.Value);
+      dbClaims = dbClaims.Where(c => c.Priority == filter.Priority.Value);
     }
 
     if (filter.Status.HasValue)
@@ -138,6 +138,7 @@ public class ClaimRepository : IClaimRepository
     dbClaim.ModifiedBy = modifierId;
     dbClaim.ModifiedAtUtc = DateTime.UtcNow;
     await _provider.SaveAsync();
+
     return dbClaim;
   }
 }

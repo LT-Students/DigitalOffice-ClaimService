@@ -11,7 +11,7 @@ public record CreateClaimRequest
   [Required]
   public string Content { get; set; }
   public Guid CategoryId { get; set; }
-  public ClaimUrgency? Urgency { get; set; }
+  public ClaimPriority? Priority { get; set; }
   public DateTime? Deadline { get; set; }
 
 }
