@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
@@ -8,6 +11,7 @@ using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Interfaces;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Resourses;
+using LT.DigitalOffice.Kernel.BrokerSupport.AccessValidatorEngine.Interfaces;
 using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Validators;
 using Microsoft.AspNetCore.Http;
@@ -144,10 +148,18 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
     _claimRepository = claimRepository;
     _contextAccessor = contextAccessor;
 
+    Guid senderId = _contextAccessor.HttpContext.GetUserId();
+
+    When(x => x.Item2.Operations.Any(), () =>
+    {
+      RuleFor(x => x.Item1)
+        .MustAsync(async (x, _) => await _claimRepository.GetAsync(new() { Id = x }, senderId, _) is not null)
+        .WithMessage("You have no rights to edit this claim.");
+    });
+
     RuleFor(paths => paths)
         .CustomAsync(async (paths, context, _) =>
         {
-          Guid senderId = _contextAccessor.HttpContext.GetUserId();
           DbClaim dbClaim = await _claimRepository.GetAsync(new() { Id = paths.Item1 }, senderId, _);
 
           foreach (var op in paths.Item2.Operations)
