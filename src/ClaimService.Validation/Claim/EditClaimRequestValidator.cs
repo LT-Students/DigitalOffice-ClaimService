@@ -147,8 +147,8 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
     RuleFor(paths => paths)
         .CustomAsync(async (paths, context, _) =>
         {
-          DbClaim dbClaim = await _claimRepository.GetAsync(new() { Id = paths.Item1 }, _);
           Guid senderId = _contextAccessor.HttpContext.GetUserId();
+          DbClaim dbClaim = await _claimRepository.GetAsync(new() { Id = paths.Item1 }, senderId, _);
 
           foreach (var op in paths.Item2.Operations)
           {

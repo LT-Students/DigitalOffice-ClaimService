@@ -14,6 +14,6 @@ public interface IClaimRepository
 {
   Task<Guid?> CreateAsync(DbClaim claim);
   Task<(List<DbClaim> dbClaims, int totalcount)> FindAsync(FindClaimFilter filter, Guid senderId, CancellationToken cancellationToken = default);
-  Task<DbClaim> GetAsync(GetClaimFilter filter, CancellationToken cancellationToken = default);
+  Task<DbClaim> GetAsync(GetClaimFilter filter, Guid senderId, CancellationToken cancellationToken = default);
   Task<DbClaim> EditAsync(Guid claimId, JsonPatchDocument<DbClaim> patch, Guid modifierId, CancellationToken cancellationToken = default);
 }

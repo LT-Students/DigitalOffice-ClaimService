@@ -51,7 +51,7 @@ public class GetClaimCommand : IGetClaimCommand
   public async Task<OperationResultResponse<ClaimResponse>> ExecuteAsync(GetClaimFilter filter, CancellationToken cancellationToken = default)
   {
     Guid senderId = _contextAccessor.HttpContext.GetUserId();
-    DbClaim dbClaim = await _repository.GetAsync(filter, cancellationToken);
+    DbClaim dbClaim = await _repository.GetAsync(filter, senderId, cancellationToken);
 
     if (dbClaim is null)
     {

@@ -69,10 +69,14 @@ public class ClaimRepository : IClaimRepository
     return dbClaims;
   }
 
-  private IQueryable<DbClaim> CreateGetPredicate(
+  private async Task<IQueryable<DbClaim>> CreateGetPredicate(
     GetClaimFilter filter,
-    IQueryable<DbClaim> dbClaims)
+    Guid senderId)
   {
+    IQueryable<DbClaim> dbClaims = await _accessValidator.IsAdminAsync(senderId)
+      ? _provider.Claims.AsNoTracking()
+      : _provider.Claims.AsNoTracking().Where(c => c.CreatedBy == senderId);
+
     return dbClaims;
   }
 
@@ -119,6 +123,7 @@ public class ClaimRepository : IClaimRepository
 
   public async Task<DbClaim> GetAsync(
     GetClaimFilter filter,
+    Guid senderId,
     CancellationToken cancellationToken = default)
   {
     if (filter is null)
@@ -126,7 +131,7 @@ public class ClaimRepository : IClaimRepository
       return default;
     }
 
-    IQueryable<DbClaim> dbClaims = CreateGetPredicate(filter, _provider.Claims.AsNoTracking());
+    IQueryable<DbClaim> dbClaims = await CreateGetPredicate(filter, senderId);
 
     return await dbClaims.AsNoTracking().FirstOrDefaultAsync(c => c.Id == filter.Id, cancellationToken);
   }

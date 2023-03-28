@@ -9,6 +9,7 @@ public class ClaimResponse
   public Guid Id { get; set; }
   public string Name { get; set; }
   public string Content { get; set; }
+  public Guid CategoryId { get; set; }
   public ClaimStatus Status { get; set; }
   public ClaimPriority Priority { get; set; }
   public DateTime? DeadLine { get; set; }

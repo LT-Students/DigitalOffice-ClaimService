@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LT.DigitalOffice.ClaimService.Data.Provider.MsSql.Ef.Migrations;
 
 [DbContext(typeof(ClaimServiceDbContext))]
-[Migration("20232103181400_CreateClaimAndCategoryTables")]
+[Migration("20230321181400_CreateClaimAndCategoryTables")]
 public class CreateClaimAndCategoryTables : Migration
 {
   public void CreateClaimTable(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ public class CreateClaimAndCategoryTables : Migration
         CategoryId = table.Column<Guid>(nullable: false),
         Content = table.Column<string>(nullable: false),
         Status = table.Column<int>(nullable: false),
-        Priority = table.Column<int>(nullable: false),
+        Urgency = table.Column<int>(nullable: false),
         DeadLine = table.Column<DateTime>(nullable: true),
         CreatedBy = table.Column<Guid>(nullable: false),
         CreatedAtUtc = table.Column<DateTime>(nullable: false),
