@@ -53,7 +53,7 @@ public class GetClaimCommand : IGetClaimCommand
     Guid senderId = _contextAccessor.HttpContext.GetUserId();
     DbClaim dbClaim = await _repository.GetAsync(filter, cancellationToken);
 
-    if (dbClaim == null)
+    if (dbClaim is null)
     {
       return _responseCreator.CreateFailureResponse<ClaimResponse>(HttpStatusCode.NotFound);
     }
@@ -67,7 +67,7 @@ public class GetClaimCommand : IGetClaimCommand
 
     return new OperationResultResponse<ClaimResponse>(
       body: _mapper.Map(
-        await _repository.GetAsync(filter, cancellationToken),
-        _userInfoMapper.Map(await _userService.GetUsersDataAsync(new List<Guid> { dbClaim.CreatedBy })).First()));
+        dbClaim,
+        _userInfoMapper.Map((await _userService.GetUsersDataAsync(new List<Guid> { dbClaim.CreatedBy })).First())));
   }
 }

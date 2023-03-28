@@ -27,7 +27,6 @@ public class FindClaimCommand : IFindClaimCommand
   private readonly IClaimRepository _repository;
   private readonly IClaimInfoMapper _mapper;
   private readonly IResponseCreator _responseCreator;
-  private readonly IAccessValidator _accessValidator;
 
   public FindClaimCommand(
     IHttpContextAccessor contextAccessor,
@@ -42,35 +41,23 @@ public class FindClaimCommand : IFindClaimCommand
     _mapper = mapper;
     _responseCreator = responseCreator;
     _baseFindValidator = findFilterValidator;
-    _accessValidator = accessValidator;
   }
 
   public async Task<FindResultResponse<ClaimInfo>> ExecuteAsync(FindClaimFilter filter, CancellationToken cancellationToken)
   {
-    Guid senderId = _contextAccessor.HttpContext.GetUserId();
-
     if (!_baseFindValidator.ValidateCustom(filter, out List<string> errors))
     {
       return _responseCreator.CreateFailureFindResponse<ClaimInfo>(
         HttpStatusCode.BadRequest, errors);
     }
 
-    (List<DbClaim> dbClaims, int totalcount) = await _repository.FindAsync(filter, cancellationToken);
-
-    if (!await _accessValidator.IsAdminAsync(senderId))
-    {
-      dbClaims = dbClaims.Where(c => c.CreatedBy == senderId).ToList();
-    }
-
-    if (dbClaims is null || !dbClaims.Any())
-    {
-      return new FindResultResponse<ClaimInfo>(body: new List<ClaimInfo>(), errors: errors);
-    }
+    Guid senderId = _contextAccessor.HttpContext.GetUserId();
+    (List<DbClaim> dbClaims, int totalcount) = await _repository.FindAsync(filter, senderId, cancellationToken);
 
     _contextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
 
     return new FindResultResponse<ClaimInfo>(
-      totalCount: totalcount,
-      body: _mapper.Map(dbClaims));
+      body: dbClaims.Select(_mapper.Map).ToList(),
+      totalCount: totalcount);
   }
 }

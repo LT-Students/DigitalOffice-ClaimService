@@ -18,9 +18,10 @@ namespace LT.DigitalOffice.ClaimService.Controllers
     [HttpPost("create")]
     public async Task<OperationResultResponse<Guid?>> CreateAsync(
       [FromServices] ICreateClaimCommand command,
-      [FromBody] CreateClaimRequest request)
+      [FromBody] CreateClaimRequest request,
+      CancellationToken cancellationToken)
     {
-      return await command.ExecuteAsync(request);
+      return await command.ExecuteAsync(request, cancellationToken);
     }
 
     [HttpGet("find")]

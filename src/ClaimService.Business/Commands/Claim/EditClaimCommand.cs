@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,25 +49,25 @@ public class EditClaimCommand : IEditClaimCommand
     JsonPatchDocument<EditClaimRequest> path,
     CancellationToken cancellationToken)
   {
-    Guid senderId = _contextAccessor.HttpContext.GetUserId();
 
     ValidationResult validationResult = await _validator.ValidateAsync((claimId, path));
     if (!validationResult.IsValid)
     {
       return _responseCreator.CreateFailureResponse<ClaimInfo>(
         HttpStatusCode.BadRequest,
-        validationResult.Errors.ConvertAll(er => er.ErrorMessage));
+        validationResult.Errors.ConvertAll(e => e.ErrorMessage));
     }
 
+    Guid senderId = _contextAccessor.HttpContext.GetUserId();
     DbClaim dbClaim = await _repository.EditAsync(claimId, _mapper.Map(path), senderId, cancellationToken);
 
-    if (dbClaim == null)
+    if (dbClaim is null)
     {
       return _responseCreator.CreateFailureResponse<ClaimInfo>(HttpStatusCode.BadRequest);
     }
 
     _contextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
 
-    return new OperationResultResponse<ClaimInfo>(body: _claimInfoMapper.Map(new List<DbClaim> { dbClaim }).First());
+    return new OperationResultResponse<ClaimInfo>(body: _claimInfoMapper.Map(dbClaim));
   }
 }

@@ -8,6 +8,7 @@ using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Db;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+using LT.DigitalOffice.Kernel.BrokerSupport.AccessValidatorEngine.Interfaces;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,11 +17,16 @@ namespace LT.DigitalOffice.ClaimService.Data;
 public class ClaimRepository : IClaimRepository
 {
   private readonly IDataProvider _provider;
+  private readonly IAccessValidator _accessValidator;
 
-  private IQueryable<DbClaim> CreateFindPredicates(
+  private async Task<IQueryable<DbClaim>> CreateFindPredicates(
     FindClaimFilter filter,
-    IQueryable<DbClaim> dbClaims)
+    Guid senderId)
   {
+    IQueryable<DbClaim> dbClaims = await _accessValidator.IsAdminAsync(senderId)
+      ? _provider.Claims.AsNoTracking()
+      : _provider.Claims.AsNoTracking().Where(c => c.CreatedBy == senderId);
+
     if (!string.IsNullOrWhiteSpace(filter.searchSubString))
     {
       dbClaims = dbClaims.Where(c =>
@@ -70,9 +76,12 @@ public class ClaimRepository : IClaimRepository
     return dbClaims;
   }
 
-  public ClaimRepository(IDataProvider provider)
+  public ClaimRepository(
+    IDataProvider provider,
+    IAccessValidator accessValidator)
   {
     _provider = provider;
+    _accessValidator = accessValidator;
   }
 
   public async Task<Guid?> CreateAsync(DbClaim claim)
@@ -88,8 +97,9 @@ public class ClaimRepository : IClaimRepository
     return claim.Id;
   }
 
-  public async Task<(List<DbClaim> dbClaim, int totalcount)> FindAsync(
+  public async Task<(List<DbClaim> dbClaims, int totalcount)> FindAsync(
     FindClaimFilter filter,
+    Guid senderId,
     CancellationToken cancellationToken = default)
   {
     if (filter is null)
@@ -97,7 +107,7 @@ public class ClaimRepository : IClaimRepository
       return default;
     }
 
-    IQueryable<DbClaim> dbClaims = CreateFindPredicates(filter, _provider.Claims.AsNoTracking());
+    IQueryable<DbClaim> dbClaims = await CreateFindPredicates(filter, senderId);
 
     return (
       await dbClaims

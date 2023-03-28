@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using LT.DigitalOffice.ClaimService.Mappers.Models.Interfaces;
+﻿using LT.DigitalOffice.ClaimService.Mappers.Models.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Dto.Models;
 using LT.DigitalOffice.Models.Broker.Models;
 
@@ -8,15 +6,15 @@ namespace LT.DigitalOffice.ClaimService.Mappers.Models;
 
 public class UserInfoMapper : IUserInfoMapper
 {
-  public List<UserInfo> Map(List<UserData> usersData)
+  public UserInfo Map(UserData userData)
   {
-    return usersData?.ConvertAll(u => new UserInfo
+    return new UserInfo
     {
-      UserId = u.Id,
-      FirstName = u.FirstName,
-      LastName = u.LastName,
-      MiddleName = u.MiddleName,
-      ImageId = u.ImageId
-    }).ToList();
+      UserId = userData.Id,
+      FirstName = userData.FirstName,
+      LastName = userData.LastName,
+      MiddleName = userData.MiddleName,
+      ImageId = userData.ImageId
+    };
   }
 }

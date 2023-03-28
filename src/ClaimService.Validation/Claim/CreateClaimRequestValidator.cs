@@ -12,7 +12,7 @@ public class CreateClaimRequestValidator : AbstractValidator<CreateClaimRequest>
   {
     RuleFor(request => request.Name)
       .MaximumLength(100)
-      .WithMessage("Name must be shorter than 100 symbbolss.");
+      .WithMessage("Name must be shorter than 100 symbols.");
 
     RuleFor(request => request.Content)
       .MaximumLength(2000)
@@ -24,14 +24,14 @@ public class CreateClaimRequestValidator : AbstractValidator<CreateClaimRequest>
 
     RuleFor(request => request.Priority)
       .IsInEnum()
-      .WithMessage("No such Priority");
+      .WithMessage("No such Priority.");
 
     When(request => request.Deadline is not null,
       () =>
     {
       RuleFor(request => request.Deadline)
       .Must(x => x > DateTime.UtcNow)
-      .WithMessage("DeadLine must not be earlier than now");
+      .WithMessage("DeadLine must not be earlier than now.");
     });
   }
 }

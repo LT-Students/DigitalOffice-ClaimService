@@ -22,25 +22,25 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ClaimRequestValidatorResource {
+    internal class ClaimEditRequestValidatorRsourses {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ClaimRequestValidatorResource() {
+        internal ClaimEditRequestValidatorRsourses() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LT.DigitalOffice.ClaimService.Validation.Claim.Resourses.ClaimRequestValidatorRes" +
-                            "ource", typeof(ClaimRequestValidatorResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LT.DigitalOffice.ClaimService.Validation.Claim.Resourses.ClaimEditRequestValidato" +
+                            "rRsourses", typeof(ClaimEditRequestValidatorRsourses).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -52,7 +52,7 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -64,7 +64,7 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         /// <summary>
         ///   Looks up a localized string similar to Claim Closed.
         /// </summary>
-        public static string ClaimClosed {
+        internal static string ClaimClosed {
             get {
                 return ResourceManager.GetString("ClaimClosed", resourceCulture);
             }
@@ -73,7 +73,7 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         /// <summary>
         ///   Looks up a localized string similar to First symbol of name can not bbe a special symbol..
         /// </summary>
-        public static string FirstCharacterIsNotSpecialName {
+        internal static string FirstCharacterIsNotSpecialName {
             get {
                 return ResourceManager.GetString("FirstCharacterIsNotSpecialName", resourceCulture);
             }
@@ -82,34 +82,34 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         /// <summary>
         ///   Looks up a localized string similar to Incorrect Deadline format..
         /// </summary>
-        public static string IncorectDeadLineFormat {
+        internal static string IncorectDeadLineFormat {
             get {
                 return ResourceManager.GetString("IncorectDeadLineFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incorrect Claim Status..
-        /// </summary>
-        public static string IncorrectClaimStatus {
-            get {
-                return ResourceManager.GetString("IncorrectClaimStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Incorrect Claim Priority..
         /// </summary>
-        public static string IncorrectClaimPriority {
+        internal static string IncorrectClaimPriority {
             get {
                 return ResourceManager.GetString("IncorrectClaimPriority", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only claim creator can choose these statuses.
+        ///   Looks up a localized string similar to Incorrect Claim Status..
         /// </summary>
-        public static string IncorrectUser {
+        internal static string IncorrectClaimStatus {
+            get {
+                return ResourceManager.GetString("IncorrectClaimStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only claim creator can choose these statuses..
+        /// </summary>
+        internal static string IncorrectUser {
             get {
                 return ResourceManager.GetString("IncorrectUser", resourceCulture);
             }
@@ -118,7 +118,7 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         /// <summary>
         ///   Looks up a localized string similar to Content musn&apos;t be empty..
         /// </summary>
-        public static string NotEmptyContent {
+        internal static string NotEmptyContent {
             get {
                 return ResourceManager.GetString("NotEmptyContent", resourceCulture);
             }
@@ -127,16 +127,16 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         /// <summary>
         ///   Looks up a localized string similar to Name mustn&apos;t be empty..
         /// </summary>
-        public static string NotEmptyName {
+        internal static string NotEmptyName {
             get {
                 return ResourceManager.GetString("NotEmptyName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This CategoryId doesn&apos;t exist..
+        ///   Looks up a localized string similar to NotExistingCategoryId..
         /// </summary>
-        public static string NotExistingCategoryId {
+        internal static string NotExistingCategoryId {
             get {
                 return ResourceManager.GetString("NotExistingCategoryId", resourceCulture);
             }
@@ -145,7 +145,7 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         /// <summary>
         ///   Looks up a localized string similar to Content can not be longer than 2000 symbols..
         /// </summary>
-        public static string TooLongContent {
+        internal static string TooLongContent {
             get {
                 return ResourceManager.GetString("TooLongContent", resourceCulture);
             }
@@ -154,7 +154,7 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         /// <summary>
         ///   Looks up a localized string similar to Name can not bbe longer than 100 symbols..
         /// </summary>
-        public static string TooLongName {
+        internal static string TooLongName {
             get {
                 return ResourceManager.GetString("TooLongName", resourceCulture);
             }

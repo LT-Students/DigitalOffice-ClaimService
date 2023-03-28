@@ -126,14 +126,14 @@
   <data name="IncorectDeadLineFormat" xml:space="preserve">
     <value>Incorrect Deadline format.</value>
   </data>
-  <data name="IncorrectClaimStatus" xml:space="preserve">
-    <value>Incorrect Claim Status.</value>
-  </data>
   <data name="IncorrectClaimPriority" xml:space="preserve">
     <value>Incorrect Claim Priority.</value>
   </data>
+  <data name="IncorrectClaimStatus" xml:space="preserve">
+    <value>Incorrect Claim Status.</value>
+  </data>
   <data name="IncorrectUser" xml:space="preserve">
-    <value>Only claim creator can choose these statuses</value>
+    <value>Only claim creator can choose these statuses.</value>
   </data>
   <data name="NotEmptyContent" xml:space="preserve">
     <value>Content musn't be empty.</value>
@@ -142,7 +142,7 @@
     <value>Name mustn't be empty.</value>
   </data>
   <data name="NotExistingCategoryId" xml:space="preserve">
-    <value>This CategoryId doesn't exist.</value>
+    <value>NotExistingCategoryId.</value>
   </data>
   <data name="TooLongContent" xml:space="preserve">
     <value>Content can not be longer than 2000 symbols.</value>

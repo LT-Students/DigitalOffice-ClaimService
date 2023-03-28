@@ -9,17 +9,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Claim\Resourses\ClaimRequestValidatorResource.Designer.cs">
+    <Compile Update="Claim\Resourses\ClaimEditRequestValidatorRsourses.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ClaimRequestValidatorResource.resx</DependentUpon>
+      <DependentUpon>ClaimEditRequestValidatorRsourses.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Claim\Resourses\ClaimRequestValidatorResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ClaimRequestValidatorResource.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Claim\Resourses\ClaimEditRequestValidatorRsourses.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClaimEditRequestValidatorRsourses.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

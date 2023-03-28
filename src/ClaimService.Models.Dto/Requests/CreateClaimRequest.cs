@@ -13,5 +13,4 @@ public record CreateClaimRequest
   public Guid CategoryId { get; set; }
   public ClaimPriority? Priority { get; set; }
   public DateTime? Deadline { get; set; }
-
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation.Results;
 using LT.DigitalOffice.ClaimService.Business.Commands.Claim.Interfaces;
@@ -36,18 +37,18 @@ public class CreateClaimCommand : ICreateClaimCommand
     _responseCreator = responseCreator;
   }
 
-  public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateClaimRequest request)
+  public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateClaimRequest request, CancellationToken cancellationToken)
   {
-    Guid senderId = _contextAccessor.HttpContext.GetUserId();
     ValidationResult validationResult = await _validator.ValidateAsync(request);
 
     if (!validationResult.IsValid)
     {
       return _responseCreator.CreateFailureResponse<Guid?>(
         HttpStatusCode.BadRequest,
-        validationResult.Errors.ConvertAll(er => er.ErrorMessage));
+        validationResult.Errors.ConvertAll(e => e.ErrorMessage));
     }
 
+    Guid senderId = _contextAccessor.HttpContext.GetUserId();
     OperationResultResponse<Guid?> response = new(body: await _repository.CreateAsync(_mapper.Map(request, senderId)));
 
     _contextAccessor.HttpContext.Response.StatusCode = response.Body is null
