@@ -6,7 +6,7 @@ using FluentValidation.Results;
 using LT.DigitalOffice.ClaimService.Business.Commands.Claim.Interfaces;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Mappers.Db.Intterfaces;
-using LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Interfaces;
 using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Helpers.Interfaces;

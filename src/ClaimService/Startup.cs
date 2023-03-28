@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using ClaimService.Data.Provider.MsSql.Ef;
+using LT.DigitalOffice.ClaimService.Data.Provider.MsSql.Ef;
 using HealthChecks.UI.Client;
 using LT.DigitalOffice.ClaimService.Models.Dto.Configurations;
 using LT.DigitalOffice.Kernel.BrokerSupport.Configurations;

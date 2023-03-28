@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClaimService.Data.Provider.MsSql.Ef;
-using LT.DigitalOffice.ClaimService.Models.Db;
+﻿using LT.DigitalOffice.ClaimService.Models.Db;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 

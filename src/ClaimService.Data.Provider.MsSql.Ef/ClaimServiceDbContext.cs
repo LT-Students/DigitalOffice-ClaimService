@@ -2,7 +2,7 @@
 using LT.DigitalOffice.ClaimService.Models.Db;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClaimService.Data.Provider.MsSql.Ef;
+namespace LT.DigitalOffice.ClaimService.Data.Provider.MsSql.Ef;
 
 public class ClaimServiceDbContext : DbContext, IDataProvider
 {

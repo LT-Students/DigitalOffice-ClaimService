@@ -3,7 +3,7 @@ using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using LT.DigitalOffice.Kernel.Requests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 
 public record FindClaimFilter : BaseFindFilter
 {

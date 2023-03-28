@@ -1,5 +1,4 @@
 ﻿using System;
-using ClaimService.Data.Provider.MsSql.Ef;
 using LT.DigitalOffice.ClaimService.Models.Db;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;

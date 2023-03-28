@@ -5,7 +5,7 @@ using FluentValidation;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Db;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
-using LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Interfaces;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Resourses;
 using LT.DigitalOffice.Kernel.Extensions;

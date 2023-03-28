@@ -2,7 +2,7 @@
 using LT.DigitalOffice.ClaimService.Mappers.Db.Intterfaces;
 using LT.DigitalOffice.ClaimService.Models.Db;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
-using LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 
 namespace LT.DigitalOffice.ClaimService.Mappers.Db;
 

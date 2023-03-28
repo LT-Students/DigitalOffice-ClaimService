@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ClaimService.Data.Provider;
+using LT.DigitalOffice.ClaimService.Data.Provider;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Db;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
-using LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.Kernel.BrokerSupport.AccessValidatorEngine.Interfaces;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
@@ -128,7 +128,7 @@ public class ClaimRepository : IClaimRepository
 
     IQueryable<DbClaim> dbClaims = CreateGetPredicate(filter, _provider.Claims.AsNoTracking());
 
-    return await dbClaims.FirstOrDefaultAsync(c => c.Id == filter.Id, cancellationToken);
+    return await dbClaims.AsNoTracking().FirstOrDefaultAsync(c => c.Id == filter.Id, cancellationToken);
   }
 
   public async Task<DbClaim> EditAsync(

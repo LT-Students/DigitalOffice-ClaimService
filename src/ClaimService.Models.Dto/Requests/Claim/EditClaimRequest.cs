@@ -1,7 +1,7 @@
 ﻿using System;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 
-namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 
 public record EditClaimRequest
 {

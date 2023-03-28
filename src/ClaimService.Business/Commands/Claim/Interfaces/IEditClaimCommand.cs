@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using LT.DigitalOffice.ClaimService.Models.Dto.Models;
-using LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.Kernel.Attributes;
 using LT.DigitalOffice.Kernel.Responses;
 using Microsoft.AspNetCore.JsonPatch;

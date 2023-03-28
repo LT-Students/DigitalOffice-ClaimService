@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
-using LT.DigitalOffice.ClaimService.Models.Dto.Requests;
+using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Interfaces;
 
 namespace LT.DigitalOffice.ClaimService.Validation.Claim;

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ClaimService.Data.Provider;
+using LT.DigitalOffice.ClaimService.Data.Provider;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
