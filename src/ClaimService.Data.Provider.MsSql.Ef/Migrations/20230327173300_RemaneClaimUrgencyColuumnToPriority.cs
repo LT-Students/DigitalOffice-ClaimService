@@ -6,9 +6,9 @@ namespace LT.DigitalOffice.ClaimService.Data.Provider.MsSql.Ef.Migrations;
 
 [DbContext(typeof(ClaimServiceDbContext))]
 [Migration("20230327173300_RemaneClaimUrgencyColuumnToPriority")]
-public class RemaneClaimUrgencyColuumnToPriority : Migration
+public class RemaneClaimUrgencyColumnToPriority : Migration
 {
-  public void RenameUrgencyColummnToPriority(MigrationBuilder migrationBuilder)
+  public void RenameUrgencyColumnToPriority(MigrationBuilder migrationBuilder)
   {
     migrationBuilder.RenameColumn(
       name: "Urgency",
@@ -18,7 +18,7 @@ public class RemaneClaimUrgencyColuumnToPriority : Migration
 
   protected override void Up(MigrationBuilder migrationBuilder)
   {
-    RenameUrgencyColummnToPriority(migrationBuilder);
+    RenameUrgencyColumnToPriority(migrationBuilder);
   }
 
   protected override void Down(MigrationBuilder migrationBuilder)
