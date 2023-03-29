@@ -8,10 +8,10 @@ namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 public record FindClaimFilter : BaseFindFilter
 {
   [FromQuery(Name = "isAscendingSort")]
-  public bool? isAscendingSort { get; set; }
+  public bool? IsAscendingSort { get; set; }
 
   [FromQuery(Name = "searchSubString")]
-  public string searchSubString { get; set; }
+  public string SearchSubString { get; set; }
 
   [FromQuery(Name = "categoryId")]
   public Guid? CategoryId { get; set; }

@@ -27,11 +27,11 @@ public class ClaimRepository : IClaimRepository
       ? _provider.Claims.AsNoTracking()
       : _provider.Claims.AsNoTracking().Where(c => c.CreatedBy == senderId);
 
-    if (!string.IsNullOrWhiteSpace(filter.searchSubString))
+    if (!string.IsNullOrWhiteSpace(filter.SearchSubString))
     {
       dbClaims = dbClaims.Where(c =>
-      c.Content.Contains(filter.searchSubString)
-      || c.Name.Contains(filter.searchSubString));
+      c.Content.Contains(filter.SearchSubString)
+      || c.Name.Contains(filter.SearchSubString));
     }
 
     if (filter.CategoryId.HasValue)
@@ -59,9 +59,9 @@ public class ClaimRepository : IClaimRepository
       dbClaims = dbClaims.Where(c => c.CreatedBy == filter.AuthorId.Value);
     }
 
-    if (filter.isAscendingSort.HasValue)
+    if (filter.IsAscendingSort.HasValue)
     {
-      dbClaims = filter.isAscendingSort.Value
+      dbClaims = filter.IsAscendingSort.Value
         ? dbClaims.OrderBy(c => c.Id)
         : dbClaims.OrderByDescending(c => c.Id);
     }
