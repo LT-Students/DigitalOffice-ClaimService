@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LT.DigitalOffice.ClaimService.Data.Provider.MsSql.Ef.Migrations;
 
 [DbContext(typeof(ClaimServiceDbContext))]
-[Migration("20230327173300_RemaneClaimUrgencyColuumnToPriority")]
-public class RemaneClaimUrgencyColumnToPriority : Migration
+[Migration("20230327173300_RenameClaimUrgencyColumnToPriority")]
+public class RenameClaimUrgencyColumnToPriority : Migration
 {
   public void RenameUrgencyColumnToPriority(MigrationBuilder migrationBuilder)
   {
