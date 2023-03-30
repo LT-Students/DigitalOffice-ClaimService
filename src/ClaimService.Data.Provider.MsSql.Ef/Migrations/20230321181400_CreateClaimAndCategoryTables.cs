@@ -20,7 +20,7 @@ public class CreateClaimAndCategoryTables : Migration
         CategoryId = table.Column<Guid>(nullable: false),
         Content = table.Column<string>(nullable: false),
         Status = table.Column<int>(nullable: false),
-        Urgency = table.Column<int>(nullable: false),
+        Priority = table.Column<int>(nullable: false),
         DeadLine = table.Column<DateTime>(nullable: true),
         CreatedBy = table.Column<Guid>(nullable: false),
         CreatedAtUtc = table.Column<DateTime>(nullable: false),

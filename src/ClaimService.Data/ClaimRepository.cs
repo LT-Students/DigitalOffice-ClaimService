@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LT.DigitalOffice.ClaimService.Data.Provider;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
+using LT.DigitalOffice.ClaimService.Data.Provider;
 using LT.DigitalOffice.ClaimService.Models.Db;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
@@ -133,7 +133,7 @@ public class ClaimRepository : IClaimRepository
 
     IQueryable<DbClaim> dbClaims = await CreateGetPredicate(filter, senderId);
 
-    return await dbClaims.AsNoTracking().FirstOrDefaultAsync(c => c.Id == filter.Id, cancellationToken);
+    return await dbClaims.AsNoTracking().FirstOrDefaultAsync(c => c.Id == filter.ClaimId, cancellationToken);
   }
 
   public async Task<DbClaim> EditAsync(

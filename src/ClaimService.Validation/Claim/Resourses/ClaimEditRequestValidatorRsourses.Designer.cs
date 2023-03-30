@@ -152,7 +152,7 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name can not bbe longer than 100 symbols..
+        ///   Looks up a localized string similar to Name can not be longer than 100 symbols..
         /// </summary>
         internal static string TooLongName {
             get {

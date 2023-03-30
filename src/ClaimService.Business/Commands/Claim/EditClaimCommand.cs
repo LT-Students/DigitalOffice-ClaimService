@@ -46,11 +46,11 @@ public class EditClaimCommand : IEditClaimCommand
 
   public async Task<OperationResultResponse<ClaimInfo>> ExecuteAsync(
     Guid claimId,
-    JsonPatchDocument<EditClaimRequest> path,
+    JsonPatchDocument<EditClaimRequest> patch,
     CancellationToken cancellationToken)
   {
 
-    ValidationResult validationResult = await _validator.ValidateAsync((claimId, path));
+    ValidationResult validationResult = await _validator.ValidateAsync((claimId, patch));
     if (!validationResult.IsValid)
     {
       return _responseCreator.CreateFailureResponse<ClaimInfo>(
@@ -59,7 +59,7 @@ public class EditClaimCommand : IEditClaimCommand
     }
 
     Guid senderId = _contextAccessor.HttpContext.GetUserId();
-    DbClaim dbClaim = await _repository.EditAsync(claimId, _mapper.Map(path), senderId, cancellationToken);
+    DbClaim dbClaim = await _repository.EditAsync(claimId, _mapper.Map(patch), senderId, cancellationToken);
 
     if (dbClaim is null)
     {

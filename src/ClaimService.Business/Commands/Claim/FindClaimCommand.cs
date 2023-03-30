@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -57,7 +56,7 @@ public class FindClaimCommand : IFindClaimCommand
     _contextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
 
     return new FindResultResponse<ClaimInfo>(
-      body: dbClaims.Select(_mapper.Map).ToList(),
+      body: dbClaims.ConvertAll(_mapper.Map),
       totalCount: totalcount);
   }
 }

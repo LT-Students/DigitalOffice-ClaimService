@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using FluentValidation;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Db;
@@ -11,7 +8,6 @@ using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Interfaces;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Resourses;
-using LT.DigitalOffice.Kernel.BrokerSupport.AccessValidatorEngine.Interfaces;
 using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Validators;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +22,7 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
   private readonly IClaimRepository _claimRepository;
   private readonly IHttpContextAccessor _contextAccessor;
 
-  private async Task HandleInternalPropertyValidationAsync(
+  private void HandleInternalPropertyValidation(
     Operation<EditClaimRequest> requestedOperation,
     ValidationContext<(Guid, JsonPatchDocument<EditClaimRequest>)> context,
     DbClaim dbClaim,
@@ -74,19 +70,19 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
       },
       CascadeMode.Stop);
 
-    await AddFailureForPropertyIfAsync(
+    AddFailureForPropertyIf(
       nameof(EditClaimRequest.CategoryId),
       x => x == OperationType.Replace,
       new()
       {
         {
-          async (x) =>
+          x =>
           {
             return Guid.TryParse(x.value.ToString(), out Guid categoryId)
-              ? await _categoryRepository.DoesExistAsync(categoryId)
-                && (dbClaim.Status == ClaimStatus.New
-                || dbClaim.Status == ClaimStatus.Created
-                || dbClaim.Status == ClaimStatus.Denied)
+              ?  _categoryRepository.DoesExistAsync(categoryId) &&
+              (dbClaim.Status == ClaimStatus.New ||
+              dbClaim.Status == ClaimStatus.Created ||
+              dbClaim.Status == ClaimStatus.Denied)
               : false;
           },
           ClaimEditRequestValidatorRsourses.NotExistingCategoryId
@@ -100,12 +96,12 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
       new()
       {
         {
-          x => Enum.TryParse(x.value?.ToString(), out ClaimStatus res)
-          && Enum.IsDefined(typeof(ClaimStatus),res),
+          x => Enum.TryParse(x.value?.ToString(), out ClaimStatus res) &&
+          Enum.IsDefined(typeof(ClaimStatus),res),
           ClaimEditRequestValidatorRsourses.IncorrectClaimStatus
         },
-        { x => Enum.TryParse(x.value?.ToString(), out ClaimStatus res)
-          && res == ClaimStatus.Closed || res == ClaimStatus.Returned ? dbClaim.CreatedBy == senderId : true,
+        { x => Enum.TryParse(x.value?.ToString(), out ClaimStatus res) &&
+          res == ClaimStatus.Closed || res == ClaimStatus.Returned ? dbClaim.CreatedBy == senderId : true,
           ClaimEditRequestValidatorRsourses.IncorrectUser
         }
       },
@@ -117,8 +113,8 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
       new()
       {
         {
-          x => Enum.TryParse(x.value?.ToString(), out ClaimPriority res)
-          && Enum.IsDefined(typeof(ClaimPriority),res),
+          x => Enum.TryParse(x.value?.ToString(), out ClaimPriority res) &&
+          Enum.IsDefined(typeof(ClaimPriority),res),
           ClaimEditRequestValidatorRsourses.IncorrectClaimPriority
         }
       },
@@ -131,8 +127,8 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
       {
         { x => string.IsNullOrEmpty(x.value?.ToString())
           ? true
-          : DateTime.TryParse(x.value.ToString(), out DateTime result)
-          && result > DateTime.Now,
+          : DateTime.TryParse(x.value.ToString(), out DateTime result) &&
+          result > DateTime.Now,
           ClaimEditRequestValidatorRsourses.IncorectDeadLineFormat
         }
       },
@@ -153,18 +149,18 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
     When(x => x.Item2.Operations.Any(), () =>
     {
       RuleFor(x => x.Item1)
-        .MustAsync(async (x, _) => await _claimRepository.GetAsync(new() { Id = x }, senderId, _) is not null)
+        .MustAsync(async (x, _) => await _claimRepository.GetAsync(new() { ClaimId = x }, senderId, _) is not null)
         .WithMessage("You have no rights to edit this claim.");
     });
 
     RuleFor(paths => paths)
         .CustomAsync(async (paths, context, _) =>
         {
-          DbClaim dbClaim = await _claimRepository.GetAsync(new() { Id = paths.Item1 }, senderId, _);
+          DbClaim dbClaim = await _claimRepository.GetAsync(new() { ClaimId = paths.Item1 }, senderId, _);
 
           foreach (var op in paths.Item2.Operations)
           {
-            await HandleInternalPropertyValidationAsync(op, context, dbClaim, senderId);
+            HandleInternalPropertyValidation(op, context, dbClaim, senderId);
           }
         });
   }

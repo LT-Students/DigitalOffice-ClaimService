@@ -16,7 +16,7 @@ public class ClaimInfoMapper : IClaimInfoMapper
       CategoryId = dbClaim.CategoryId,
       Status = dbClaim.Status,
       Priority = dbClaim.Priority,
-      DeadLine = dbClaim.DeadLine ?? null,
+      DeadLine = dbClaim.DeadLine,
       CreatedBy = dbClaim.CreatedBy,
       CreatedAtUtc = dbClaim.CreatedAtUtc,
     };

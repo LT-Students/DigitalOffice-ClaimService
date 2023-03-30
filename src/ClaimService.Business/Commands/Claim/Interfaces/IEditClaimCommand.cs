@@ -14,6 +14,6 @@ public interface IEditClaimCommand
 {
   Task<OperationResultResponse<ClaimInfo>> ExecuteAsync(
     Guid claimId,
-    JsonPatchDocument<EditClaimRequest> path,
+    JsonPatchDocument<EditClaimRequest> patch,
     CancellationToken cancellationToken);
 }

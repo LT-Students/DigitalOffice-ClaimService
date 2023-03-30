@@ -16,7 +16,7 @@ public class ClaimResponseMapper : IClaimResponseMapper
         Id = dbClaim.Id,
         Name = dbClaim.Name,
         Content = dbClaim.Content,
-        CategoryId= dbClaim.CategoryId,
+        CategoryId = dbClaim.CategoryId,
         Status = dbClaim.Status,
         Priority = dbClaim.Priority,
         DeadLine = dbClaim.DeadLine,

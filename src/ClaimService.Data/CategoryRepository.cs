@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Threading.Tasks;
-using LT.DigitalOffice.ClaimService.Data.Provider;
+using System.Linq;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using LT.DigitalOffice.ClaimService.Data.Provider;
 
 namespace LT.DigitalOffice.ClaimService.Data;
 
@@ -15,8 +14,8 @@ public class CategoryRepository : ICategoryRepository
     _provider = provider;
   }
 
-  public async Task<bool> DoesExistAsync(Guid categoryId)
+  public bool DoesExistAsync(Guid categoryId)
   {
-    return await _provider.Categories.AnyAsync(category => category.Id == categoryId && category.IsActive);
+    return _provider.Categories.Any(category => category.Id == categoryId && category.IsActive);
   }
 }

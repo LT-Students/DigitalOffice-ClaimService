@@ -46,9 +46,9 @@ public class ClaimController : ControllerBase
   public async Task<OperationResultResponse<ClaimInfo>> EditAsync(
     [FromServices] IEditClaimCommand command,
     [FromQuery] Guid claimId,
-    [FromBody] JsonPatchDocument<EditClaimRequest> path,
+    [FromBody] JsonPatchDocument<EditClaimRequest> patch,
     CancellationToken cancellationToken)
   {
-    return await command.ExecuteAsync(claimId, path, cancellationToken);
+    return await command.ExecuteAsync(claimId, patch, cancellationToken);
   }
 }

@@ -148,6 +148,6 @@
     <value>Content can not be longer than 2000 symbols.</value>
   </data>
   <data name="TooLongName" xml:space="preserve">
-    <value>Name can not bbe longer than 100 symbols.</value>
+    <value>Name can not be longer than 100 symbols.</value>
   </data>
 </root>

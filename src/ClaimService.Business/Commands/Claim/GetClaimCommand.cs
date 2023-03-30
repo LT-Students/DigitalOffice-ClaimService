@@ -68,6 +68,6 @@ public class GetClaimCommand : IGetClaimCommand
     return new OperationResultResponse<ClaimResponse>(
       body: _mapper.Map(
         dbClaim,
-        _userInfoMapper.Map((await _userService.GetUsersDataAsync(new List<Guid> { dbClaim.CreatedBy })).First())));
+        _userInfoMapper.Map((await _userService.GetUsersDataAsync(new List<Guid> { dbClaim.CreatedBy })).FirstOrDefault())));
   }
 }

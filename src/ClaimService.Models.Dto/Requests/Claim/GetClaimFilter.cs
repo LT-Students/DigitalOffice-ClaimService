@@ -6,5 +6,5 @@ namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 public record GetClaimFilter
 {
   [FromQuery(Name = "claimId")]
-  public Guid Id { get; set; }
+  public Guid ClaimId { get; set; }
 }
