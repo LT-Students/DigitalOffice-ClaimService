@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
 
@@ -9,17 +9,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Claim\Resourses\ClaimEditRequestValidatorRsourses.Designer.cs">
+    <Compile Update="Claim\Resourses\EditClaimRequestValidatorResourses.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ClaimEditRequestValidatorRsourses.resx</DependentUpon>
+      <DependentUpon>EditClaimRequestValidatorResourses.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Claim\Resourses\ClaimEditRequestValidatorRsourses.resx">
+    <EmbeddedResource Update="Claim\Resourses\EditClaimRequestValidatorResourses.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ClaimEditRequestValidatorRsourses.Designer.cs</LastGenOutput>
+      <LastGenOutput>EditClaimRequestValidatorResourses.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
