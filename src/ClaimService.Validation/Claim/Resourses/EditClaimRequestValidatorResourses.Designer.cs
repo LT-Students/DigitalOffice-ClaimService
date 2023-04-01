@@ -22,14 +22,14 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ClaimEditRequestValidatorRsourses {
+    internal class EditClaimRequestValidatorResourses {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ClaimEditRequestValidatorRsourses() {
+        internal EditClaimRequestValidatorResourses() {
         }
         
         /// <summary>
@@ -39,8 +39,8 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LT.DigitalOffice.ClaimService.Validation.Claim.Resourses.ClaimEditRequestValidato" +
-                            "rRsourses", typeof(ClaimEditRequestValidatorRsourses).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LT.DigitalOffice.ClaimService.Validation.Claim.Resourses.EditClaimRequestValidato" +
+                            "rResourses", typeof(EditClaimRequestValidatorResourses).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -148,15 +148,6 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         internal static string TooLongContent {
             get {
                 return ResourceManager.GetString("TooLongContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name can not be longer than 100 symbols..
-        /// </summary>
-        internal static string TooLongName {
-            get {
-                return ResourceManager.GetString("TooLongName", resourceCulture);
             }
         }
     }
