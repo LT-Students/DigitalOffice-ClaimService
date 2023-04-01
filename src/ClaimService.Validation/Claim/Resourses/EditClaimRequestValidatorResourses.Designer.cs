@@ -62,7 +62,7 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Claim Closed.
+        ///   Looks up a localized string similar to Claim Closed..
         /// </summary>
         internal static string ClaimClosed {
             get {
@@ -148,6 +148,15 @@ namespace LT.DigitalOffice.ClaimService.Validation.Claim.Resourses {
         internal static string TooLongContent {
             get {
                 return ResourceManager.GetString("TooLongContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name can not be longer than 100 symbols..
+        /// </summary>
+        internal static string TooLongName {
+            get {
+                return ResourceManager.GetString("TooLongName", resourceCulture);
             }
         }
     }
