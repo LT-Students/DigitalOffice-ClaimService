@@ -54,9 +54,9 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
       x => x == OperationType.Replace,
       new()
       {
-        { x => !string.IsNullOrEmpty(x.value?.ToString().Trim()), EditClaimRequestValidatorResourses.NotEmptyName },
-        { x => x.value.ToString().Trim().Length < 100, EditClaimRequestValidatorResourses.TooLongName },
-        { x => char.IsLetterOrDigit(x.value.ToString().Trim()[0]), EditClaimRequestValidatorResourses.FirstCharacterIsNotSpecialName }
+        { x => !string.IsNullOrEmpty(x.value?.ToString().Trim()), ClaimEditRequestValidatorRsourses.NotEmptyName },
+        { x => x.value.ToString().Trim().Length < 100, ClaimEditRequestValidatorRsourses.TooLongName },
+        { x => char.IsLetterOrDigit(x.value.ToString().Trim()[0]), ClaimEditRequestValidatorRsourses.FirstCharacterIsNotSpecialName }
       },
       CascadeMode.Stop);
 
@@ -65,8 +65,8 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
       x => x == OperationType.Replace,
       new()
       {
-        { x => !string.IsNullOrEmpty(x.value?.ToString().Trim()), EditClaimRequestValidatorResourses.NotEmptyContent },
-        { x => x.value.ToString().Trim().Length < 2000, EditClaimRequestValidatorResourses.TooLongContent }
+        { x => !string.IsNullOrEmpty(x.value?.ToString().Trim()), ClaimEditRequestValidatorRsourses.NotEmptyContent },
+        { x => x.value.ToString().Trim().Length < 2000, ClaimEditRequestValidatorRsourses.TooLongContent }
       },
       CascadeMode.Stop);
 
@@ -85,7 +85,7 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
               dbClaim.Status == ClaimStatus.Denied)
               : false;
           },
-          EditClaimRequestValidatorResourses.NotExistingCategoryId
+          ClaimEditRequestValidatorRsourses.NotExistingCategoryId
         }
       },
       CascadeMode.Stop);
@@ -98,11 +98,11 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
         {
           x => Enum.TryParse(x.value?.ToString(), out ClaimStatus res) &&
           Enum.IsDefined(typeof(ClaimStatus),res),
-          EditClaimRequestValidatorResourses.IncorrectClaimStatus
+          ClaimEditRequestValidatorRsourses.IncorrectClaimStatus
         },
         { x => Enum.TryParse(x.value?.ToString(), out ClaimStatus res) &&
           res == ClaimStatus.Closed || res == ClaimStatus.Returned ? dbClaim.CreatedBy == senderId : true,
-          EditClaimRequestValidatorResourses.IncorrectUser
+          ClaimEditRequestValidatorRsourses.IncorrectUser
         }
       },
       CascadeMode.Stop);
@@ -115,7 +115,7 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
         {
           x => Enum.TryParse(x.value?.ToString(), out ClaimPriority res) &&
           Enum.IsDefined(typeof(ClaimPriority),res),
-          EditClaimRequestValidatorResourses.IncorrectClaimPriority
+          ClaimEditRequestValidatorRsourses.IncorrectClaimPriority
         }
       },
       CascadeMode.Stop);
@@ -129,7 +129,7 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
           ? true
           : DateTime.TryParse(x.value.ToString(), out DateTime result) &&
           result > DateTime.Now,
-          EditClaimRequestValidatorResourses.IncorectDeadLineFormat
+          ClaimEditRequestValidatorRsourses.IncorectDeadLineFormat
         }
       },
       CascadeMode.Stop);
