@@ -16,7 +16,7 @@ public class CategoryRepository : ICategoryRepository
     _provider = provider;
   }
 
-  public Task DoesExistAsync(Guid categoryId)
+  public Task<bool> DoesExistAsync(Guid categoryId)
   {
     return _provider.Categories.AnyAsync(category => category.Id == categoryId && category.IsActive);
   }

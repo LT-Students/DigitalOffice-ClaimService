@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentValidation;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Db;
@@ -22,7 +23,7 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
   private readonly IClaimRepository _claimRepository;
   private readonly IHttpContextAccessor _contextAccessor;
 
-  private void HandleInternalPropertyValidation(
+  private async Task HandleInternalPropertyValidationAsync(
     Operation<EditClaimRequest> requestedOperation,
     ValidationContext<(Guid, JsonPatchDocument<EditClaimRequest>)> context,
     DbClaim dbClaim,
@@ -70,16 +71,16 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
       },
       CascadeMode.Stop);
 
-    AddFailureForPropertyIf(
+    await AddFailureForPropertyIfAsync(
       nameof(EditClaimRequest.CategoryId),
       x => x == OperationType.Replace,
       new()
       {
         {
-          x =>
+          async (x) =>
           {
             return Guid.TryParse(x.value.ToString(), out Guid categoryId)
-              ?  _categoryRepository.DoesExistAsync(categoryId) &&
+              ? await _categoryRepository.DoesExistAsync(categoryId) &&
               (dbClaim.Status == ClaimStatus.New ||
               dbClaim.Status == ClaimStatus.Created ||
               dbClaim.Status == ClaimStatus.Denied)
@@ -160,7 +161,7 @@ public class EditClaimRequestValidator : ExtendedEditRequestValidator<Guid, Edit
 
           foreach (var op in paths.Item2.Operations)
           {
-            HandleInternalPropertyValidation(op, context, dbClaim, senderId);
+            await HandleInternalPropertyValidationAsync(op, context, dbClaim, senderId);
           }
         });
   }

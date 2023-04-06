@@ -19,7 +19,7 @@ public class CreateClaimRequestValidator : AbstractValidator<CreateClaimRequest>
       .WithMessage("Content must be shorter than 2000 symbols.");
 
     RuleFor(request => request.CategoryId)
-      .Must(categoryRepository.DoesExistAsync)
+      .MustAsync(async (x, _) => await categoryRepository.DoesExistAsync(x))
       .WithMessage("No such Category.");
 
     RuleFor(request => request.Priority)
