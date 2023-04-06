@@ -142,7 +142,7 @@
     <value>Name mustn't be empty.</value>
   </data>
   <data name="NotExistingCategoryId" xml:space="preserve">
-    <value>NotExistingCategoryId.</value>
+    <value>This Category doesn't exist.</value>
   </data>
   <data name="TooLongContent" xml:space="preserve">
     <value>Content can not be longer than 2000 symbols.</value>

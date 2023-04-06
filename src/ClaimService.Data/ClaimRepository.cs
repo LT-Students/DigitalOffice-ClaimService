@@ -90,12 +90,12 @@ public class ClaimRepository : IClaimRepository
 
   public async Task<Guid?> CreateAsync(DbClaim claim)
   {
-    if (claim == null)
+    if (claim is null)
     {
       return null;
     }
 
-    _provider.Claims.Add(claim);
+    await _provider.Claims.AddAsync(claim);
     await _provider.SaveAsync();
 
     return claim.Id;

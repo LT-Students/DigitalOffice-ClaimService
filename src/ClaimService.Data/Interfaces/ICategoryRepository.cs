@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LT.DigitalOffice.Kernel.Attributes;
 
 namespace LT.DigitalOffice.ClaimService.Data.Interfaces;
@@ -6,5 +7,5 @@ namespace LT.DigitalOffice.ClaimService.Data.Interfaces;
 [AutoInject]
 public interface ICategoryRepository
 {
-  bool DoesExistAsync(Guid categoryId);
+  Task DoesExistAsync(Guid categoryId);
 }
