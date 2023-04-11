@@ -18,6 +18,6 @@ public class CategoryRepository : ICategoryRepository
 
   public Task<bool> DoesExistAsync(Guid categoryId)
   {
-    return _provider.Categories.AnyAsync(category => category.Id == categoryId && category.IsActive);
+    return _provider.Categories.AsNoTracking().AnyAsync(category => category.Id == categoryId && category.IsActive);
   }
 }

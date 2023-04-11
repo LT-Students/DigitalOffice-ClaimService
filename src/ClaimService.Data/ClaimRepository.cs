@@ -69,13 +69,15 @@ public class ClaimRepository : IClaimRepository
     return dbClaims;
   }
 
-  private async Task<IQueryable<DbClaim>> CreateGetPredicate(
+  private async Task<DbClaim> CreateGetPredicate(
     GetClaimFilter filter,
-    Guid senderId)
+    Guid senderId,
+    CancellationToken cancellationToken = default)
   {
-    IQueryable<DbClaim> dbClaims = await _accessValidator.IsAdminAsync(senderId)
-      ? _provider.Claims.AsNoTracking()
-      : _provider.Claims.AsNoTracking().Where(c => c.CreatedBy == senderId);
+    DbClaim dbClaims = await _accessValidator.IsAdminAsync(senderId)
+      ? await _provider.Claims.AsNoTracking().FirstOrDefaultAsync(c => c.Id == filter.ClaimId, cancellationToken)
+      : await _provider.Claims.AsNoTracking().Where(c => 
+        c.CreatedBy == senderId).FirstOrDefaultAsync(c => c.Id == filter.ClaimId, cancellationToken);
 
     return dbClaims;
   }
@@ -131,9 +133,9 @@ public class ClaimRepository : IClaimRepository
       return default;
     }
 
-    IQueryable<DbClaim> dbClaims = await CreateGetPredicate(filter, senderId);
+    DbClaim dbClaim = await CreateGetPredicate(filter, senderId, cancellationToken);
 
-    return await dbClaims.AsNoTracking().FirstOrDefaultAsync(c => c.Id == filter.ClaimId, cancellationToken);
+    return dbClaim;
   }
 
   public async Task<DbClaim> EditAsync(
@@ -142,9 +144,9 @@ public class ClaimRepository : IClaimRepository
     Guid modifierId,
     CancellationToken cancellationToken = default)
   {
-    DbClaim dbClaim = await _provider.Claims.FirstOrDefaultAsync(c => c.Id == claimId, cancellationToken);
+    DbClaim dbClaim = await _provider.Claims.FirstOrDefaultAsync(c => c.Id == claimId && c.Status != ClaimStatus.Closed, cancellationToken);
 
-    if (dbClaim is null || dbClaim.Status == ClaimStatus.Closed)
+    if (dbClaim is null)
     {
       return default;
     }
