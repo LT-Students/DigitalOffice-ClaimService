@@ -30,8 +30,8 @@ public class ClaimRepository : IClaimRepository
     if (!string.IsNullOrWhiteSpace(filter.SearchSubString))
     {
       dbClaims = dbClaims.Where(c =>
-      c.Content.Contains(filter.SearchSubString)
-      || c.Name.Contains(filter.SearchSubString));
+        c.Content.Contains(filter.SearchSubString) || 
+        c.Name.Contains(filter.SearchSubString));
     }
 
     if (filter.CategoryId.HasValue)
@@ -75,9 +75,9 @@ public class ClaimRepository : IClaimRepository
     CancellationToken cancellationToken = default)
   {
     DbClaim dbClaims = await _accessValidator.IsAdminAsync(senderId)
-      ? await _provider.Claims.AsNoTracking().FirstOrDefaultAsync(c => c.Id == filter.ClaimId, cancellationToken)
+      ? await _provider.Claims.AsNoTracking().Where(c => c.Id == filter.ClaimId).FirstOrDefaultAsync(cancellationToken)
       : await _provider.Claims.AsNoTracking().Where(c => 
-        c.CreatedBy == senderId).FirstOrDefaultAsync(c => c.Id == filter.ClaimId, cancellationToken);
+        c.CreatedBy == senderId && c.Id == filter.ClaimId).FirstOrDefaultAsync(cancellationToken);
 
     return dbClaims;
   }
@@ -133,9 +133,7 @@ public class ClaimRepository : IClaimRepository
       return default;
     }
 
-    DbClaim dbClaim = await CreateGetPredicate(filter, senderId, cancellationToken);
-
-    return dbClaim;
+    return await CreateGetPredicate(filter, senderId, cancellationToken);
   }
 
   public async Task<DbClaim> EditAsync(

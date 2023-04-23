@@ -28,10 +28,10 @@ public class CreateClaimRequestValidator : AbstractValidator<CreateClaimRequest>
 
     When(request => request.Deadline is not null,
       () =>
-    {
-      RuleFor(request => request.Deadline)
-      .Must(x => x > DateTime.UtcNow)
-      .WithMessage("DeadLine must not be earlier than now.");
-    });
+      {
+        RuleFor(request => request.Deadline)
+        .Must(x => x > DateTime.UtcNow)
+        .WithMessage("DeadLine must not be earlier than now.");
+      });
   }
 }
