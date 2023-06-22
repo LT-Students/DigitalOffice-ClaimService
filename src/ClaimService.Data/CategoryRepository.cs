@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using LT.DigitalOffice.ClaimService.Data.Interfaces;
+﻿using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Data.Provider;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Data;
 

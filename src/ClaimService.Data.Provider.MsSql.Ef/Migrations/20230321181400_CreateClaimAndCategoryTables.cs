@@ -1,7 +1,7 @@
-﻿using System;
-using LT.DigitalOffice.ClaimService.Models.Db;
+﻿using LT.DigitalOffice.ClaimService.Models.Db;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace LT.DigitalOffice.ClaimService.Data.Provider.MsSql.Ef.Migrations;
 

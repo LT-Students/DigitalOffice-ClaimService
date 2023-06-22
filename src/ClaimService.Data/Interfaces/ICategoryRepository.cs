@@ -1,6 +1,6 @@
-﻿using System;
+﻿using LT.DigitalOffice.Kernel.Attributes;
+using System;
 using System.Threading.Tasks;
-using LT.DigitalOffice.Kernel.Attributes;
 
 namespace LT.DigitalOffice.ClaimService.Data.Interfaces;
 

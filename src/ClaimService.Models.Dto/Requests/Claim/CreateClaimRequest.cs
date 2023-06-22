@@ -1,6 +1,6 @@
-﻿using System;
+﻿using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
-using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 
 namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 

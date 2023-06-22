@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
+﻿using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
 using LT.DigitalOffice.ClaimService.Business.Commands.Claim.Interfaces;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Mappers.Models.Interfaces;
@@ -17,6 +11,12 @@ using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Helpers.Interfaces;
 using LT.DigitalOffice.Kernel.Responses;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Business.Commands.Claim;
 

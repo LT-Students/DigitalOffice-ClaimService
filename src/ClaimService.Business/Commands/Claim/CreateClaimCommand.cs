@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using LT.DigitalOffice.ClaimService.Business.Commands.Claim.Interfaces;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Mappers.Db.Intterfaces;
@@ -12,6 +8,10 @@ using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Helpers.Interfaces;
 using LT.DigitalOffice.Kernel.Responses;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Business.Commands.Claim;
 
@@ -37,9 +37,9 @@ public class CreateClaimCommand : ICreateClaimCommand
     _responseCreator = responseCreator;
   }
 
-  public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateClaimRequest request, CancellationToken cancellationToken)
+  public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateClaimRequest request, CancellationToken ct)
   {
-    ValidationResult validationResult = await _validator.ValidateAsync(request);
+    ValidationResult validationResult = await _validator.ValidateAsync(request, ct);
 
     if (!validationResult.IsValid)
     {

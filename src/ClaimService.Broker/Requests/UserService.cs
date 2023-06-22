@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DigitalOffice.Models.Broker.Models.User;
 using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
 using LT.DigitalOffice.Kernel.BrokerSupport.Helpers;
-using LT.DigitalOffice.Models.Broker.Models;
 using LT.DigitalOffice.Models.Broker.Requests.User;
 using LT.DigitalOffice.Models.Broker.Responses.User;
 using MassTransit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Broker.Requests;
 

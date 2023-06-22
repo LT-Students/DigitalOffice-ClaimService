@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using LT.DigitalOffice.ClaimService.Data.Interfaces;
+﻿using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Data.Provider;
 using LT.DigitalOffice.ClaimService.Models.Db;
 using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
@@ -11,6 +6,11 @@ using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.Kernel.BrokerSupport.AccessValidatorEngine.Interfaces;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Data;
 
@@ -30,7 +30,7 @@ public class ClaimRepository : IClaimRepository
     if (!string.IsNullOrWhiteSpace(filter.SearchSubString))
     {
       dbClaims = dbClaims.Where(c =>
-        c.Content.Contains(filter.SearchSubString) || 
+        c.Content.Contains(filter.SearchSubString) ||
         c.Name.Contains(filter.SearchSubString));
     }
 
@@ -76,7 +76,7 @@ public class ClaimRepository : IClaimRepository
   {
     DbClaim dbClaims = await _accessValidator.IsAdminAsync(senderId)
       ? await _provider.Claims.AsNoTracking().Where(c => c.Id == filter.ClaimId).FirstOrDefaultAsync(cancellationToken)
-      : await _provider.Claims.AsNoTracking().Where(c => 
+      : await _provider.Claims.AsNoTracking().Where(c =>
         c.CreatedBy == senderId && c.Id == filter.ClaimId).FirstOrDefaultAsync(cancellationToken);
 
     return dbClaims;

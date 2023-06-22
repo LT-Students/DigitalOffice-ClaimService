@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
+﻿using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
 
 namespace LT.DigitalOffice.ClaimService.Models.Db;
 

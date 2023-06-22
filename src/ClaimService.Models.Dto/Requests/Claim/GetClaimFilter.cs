@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 

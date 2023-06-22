@@ -1,5 +1,5 @@
-﻿using System;
-using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
+﻿using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
+using System;
 
 namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 

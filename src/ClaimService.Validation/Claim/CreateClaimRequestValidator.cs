@@ -1,8 +1,8 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 using LT.DigitalOffice.ClaimService.Validation.Claim.Interfaces;
+using System;
 
 namespace LT.DigitalOffice.ClaimService.Validation.Claim;
 
@@ -19,19 +19,18 @@ public class CreateClaimRequestValidator : AbstractValidator<CreateClaimRequest>
       .WithMessage("Content must be shorter than 2000 symbols.");
 
     RuleFor(request => request.CategoryId)
-      .MustAsync(async (x, _) => await categoryRepository.DoesExistAsync(x))
+      .MustAsync((x, _) => categoryRepository.DoesExistAsync(x))
       .WithMessage("No such Category.");
 
     RuleFor(request => request.Priority)
       .IsInEnum()
       .WithMessage("No such Priority.");
 
-    When(request => request.Deadline is not null,
-      () =>
-      {
-        RuleFor(request => request.Deadline)
+    When(request => request.Deadline is not null, () =>
+    {
+      RuleFor(request => request.Deadline)
         .Must(x => x > DateTime.UtcNow)
         .WithMessage("DeadLine must not be earlier than now.");
-      });
+    });
   }
 }

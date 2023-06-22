@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using LT.DigitalOffice.ClaimService.Business.Commands.Claim.Interfaces;
 using LT.DigitalOffice.ClaimService.Data.Interfaces;
 using LT.DigitalOffice.ClaimService.Mappers.Models.Interfaces;
@@ -16,6 +12,10 @@ using LT.DigitalOffice.Kernel.Helpers.Interfaces;
 using LT.DigitalOffice.Kernel.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
+using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Business.Commands.Claim;
 
@@ -47,10 +47,9 @@ public class EditClaimCommand : IEditClaimCommand
   public async Task<OperationResultResponse<ClaimInfo>> ExecuteAsync(
     Guid claimId,
     JsonPatchDocument<EditClaimRequest> patch,
-    CancellationToken cancellationToken)
+    CancellationToken ct)
   {
-
-    ValidationResult validationResult = await _validator.ValidateAsync((claimId, patch));
+    ValidationResult validationResult = await _validator.ValidateAsync((claimId, patch), ct);
     if (!validationResult.IsValid)
     {
       return _responseCreator.CreateFailureResponse<ClaimInfo>(
@@ -59,15 +58,13 @@ public class EditClaimCommand : IEditClaimCommand
     }
 
     Guid senderId = _contextAccessor.HttpContext.GetUserId();
-    DbClaim dbClaim = await _repository.EditAsync(claimId, _mapper.Map(patch), senderId, cancellationToken);
+    DbClaim dbClaim = await _repository.EditAsync(claimId, _mapper.Map(patch), senderId, ct);
 
     if (dbClaim is null)
     {
       return _responseCreator.CreateFailureResponse<ClaimInfo>(HttpStatusCode.BadRequest);
     }
 
-    _contextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
-
-    return new OperationResultResponse<ClaimInfo>(body: _claimInfoMapper.Map(dbClaim));
+    return new OperationResultResponse<ClaimInfo>(_claimInfoMapper.Map(dbClaim));
   }
 }
