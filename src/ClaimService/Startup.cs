@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using ClaimService.Data.Provider.MsSql.Ef;
-using HealthChecks.UI.Client;
+﻿using HealthChecks.UI.Client;
+using LT.DigitalOffice.ClaimService.Data.Provider.MsSql.Ef;
 using LT.DigitalOffice.ClaimService.Models.Dto.Configurations;
 using LT.DigitalOffice.Kernel.BrokerSupport.Configurations;
 using LT.DigitalOffice.Kernel.BrokerSupport.Extensions;
@@ -19,6 +16,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ClaimService;
 

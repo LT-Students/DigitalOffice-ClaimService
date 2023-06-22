@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
 
@@ -6,6 +6,30 @@
     <ProjectReference Include="..\ClaimService.Broker\ClaimService.Broker.csproj" />
     <ProjectReference Include="..\ClaimService.Data\ClaimService.Data.csproj" />
     <ProjectReference Include="..\ClaimService.Models.Dto\ClaimService.Models.Dto.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Claim\Resourses\ClaimEditRequestValidatorRsourses.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ClaimEditRequestValidatorRsourses.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Claim\Resourses\Resource1.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Claim\Resourses\ClaimEditRequestValidatorRsourses.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClaimEditRequestValidatorRsourses.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Claim\Resourses\Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

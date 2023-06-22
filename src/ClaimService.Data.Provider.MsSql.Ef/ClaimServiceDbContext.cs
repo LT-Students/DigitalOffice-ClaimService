@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using LT.DigitalOffice.ClaimService.Models.Db;
+﻿using LT.DigitalOffice.ClaimService.Models.Db;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
-namespace ClaimService.Data.Provider.MsSql.Ef;
+namespace LT.DigitalOffice.ClaimService.Data.Provider.MsSql.Ef;
 
 public class ClaimServiceDbContext : DbContext, IDataProvider
 {
