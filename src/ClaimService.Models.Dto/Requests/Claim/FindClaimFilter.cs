@@ -1,11 +1,14 @@
-﻿using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
+﻿using DigitalOffice.Kernel.Responses;
+using LT.DigitalOffice.ClaimService.Models.Dto.Enums;
+using LT.DigitalOffice.ClaimService.Models.Dto.Models;
 using LT.DigitalOffice.Kernel.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace LT.DigitalOffice.ClaimService.Models.Dto.Requests.Claim;
 
-public record FindClaimFilter : BaseFindFilter
+public record FindClaimFilter : BaseFindFilter, IRequest<FindResult<ClaimInfo>>
 {
   [FromQuery(Name = "isAscendingSort")]
   public bool? IsAscendingSort { get; set; }

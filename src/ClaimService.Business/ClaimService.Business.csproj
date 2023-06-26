@@ -3,10 +3,7 @@
   <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
 
   <ItemGroup>
-    <ProjectReference Include="..\ClaimService.Broker\ClaimService.Broker.csproj" />
-    <ProjectReference Include="..\ClaimService.Data\ClaimService.Data.csproj" />
-    <ProjectReference Include="..\ClaimService.Mappers\ClaimService.Mappers.csproj" />
-    <ProjectReference Include="..\ClaimService.Validation\ClaimService.Validation.csproj" />
+    <ProjectReference Include="..\ClaimService.Data\ClaimService.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,13 +10,13 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
   </PropertyGroup>
@@ -26,6 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="$(AssemblyName.Contains('.UnitTests')) != 'true'">
+	<PackageReference Include="MediatR" Version="12.0.1" />
 	<PackageReference Include="DigitalOffice.Kernel" Version="1.0.16" />
 	<PackageReference Include="DigitalOffice.Kernel.BrokerSupport" Version="1.0.7" />
 	<PackageReference Include="DigitalOffice.Kernel.ImageSupport" Version="1.0.5" />
