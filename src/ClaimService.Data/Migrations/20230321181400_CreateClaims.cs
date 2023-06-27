@@ -21,6 +21,7 @@ public class CreateClaims : Migration
         Status = table.Column<int>(nullable: false),
         Priority = table.Column<int>(nullable: false),
         DeadLine = table.Column<DateTime>(nullable: true),
+        IsActive = table.Column<bool>(nullable: false),
         CreatedBy = table.Column<Guid>(nullable: false),
         CreatedAtUtc = table.Column<DateTime>(nullable: false),
         ModifiedBy = table.Column<Guid>(nullable: true),

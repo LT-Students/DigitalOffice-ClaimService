@@ -14,6 +14,7 @@ public class DbClaim
   public int Status { get; set; }
   public int Priority { get; set; }
   public DateTime? DeadLine { get; set; }
+  public bool IsActive { get; set; }
   public Guid CreatedBy { get; set; }
   public DateTime CreatedAtUtc { get; set; }
   public Guid? ModifiedBy { get; set; }
