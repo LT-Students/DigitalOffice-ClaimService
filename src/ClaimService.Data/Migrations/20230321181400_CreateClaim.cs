@@ -7,7 +7,7 @@ namespace LT.DigitalOffice.ClaimService.DataLayer.Migrations;
 
 [DbContext(typeof(ClaimServiceDbContext))]
 [Migration("20230321181400_CreateClaim")]
-public class CreateClaimAndCategoryTables : Migration
+public class CreateClaim : Migration
 {
   public void CreateClaimTable(MigrationBuilder migrationBuilder)
   {
