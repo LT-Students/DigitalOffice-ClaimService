@@ -46,7 +46,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       new()
       {
         { x => !string.IsNullOrWhiteSpace(x.value.ToString().Trim()), "Name can't be null or empty." },
-        { x => x.value.ToString().Trim().Length < 301, "Name is too long." }
+        { x => x.value.ToString().Trim().Length < 51, "Name is too long." }
       },
       CascadeMode.Stop);
 
@@ -60,7 +60,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       new()
       {
         {
-          x => x.value is null || x.value.ToString().Trim().Length < 1001,
+          x => x.value is null || x.value?.ToString().Trim().Length < 501,
           "Description is too long."
         }
       });
@@ -109,6 +109,10 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
         {
           x => DateTime.TryParse(x.value?.ToString().Trim(), out DateTime deadline),
           "Incorrect is active value."
+        },
+        {
+          x => DateTime.Parse(x.value?.ToString().Trim()) > DateTime.UtcNow,
+          "Deadline value must be after current time."
         }
       });
 

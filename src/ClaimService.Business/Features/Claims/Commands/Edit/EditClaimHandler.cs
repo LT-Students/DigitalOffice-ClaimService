@@ -34,20 +34,20 @@ public class EditClaimHandler : IRequestHandler<EditClaimCommand, Unit>
   public async Task<Unit> Handle(EditClaimCommand command, CancellationToken ct)
   {
     DbClaim claim = await _provider.Claims.FirstOrDefaultAsync(c => c.Id == command.ClaimId && c.Status != (int)ClaimStatus.Closed, ct);
-    Guid editorId = _httpContextAccessor.HttpContext.GetUserId();
 
     if (claim is null)
     {
       throw new BadRequestException();
     }
 
+    Guid editorId = _httpContextAccessor.HttpContext.GetUserId();
     if (claim.CreatedBy != editorId && !await _accessValidator.IsAdminAsync(editorId))
     {
       throw new ForbiddenException();
     }
 
     Map(command.Patch).ApplyTo(claim);
-    claim.ModifiedBy = _httpContextAccessor.HttpContext.GetUserId();
+    claim.ModifiedBy = editorId;
     claim.ModifiedAtUtc = DateTime.UtcNow;
     await _provider.SaveAsync();
 

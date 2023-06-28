@@ -32,7 +32,7 @@ public class CreateClaimHandler : IRequestHandler<CreateClaimCommand, Guid>
 
   private async Task<Guid> CreateAsync(DbClaim claim)
   {
-    await _provider.Claims.AddAsync(claim);
+    _provider.Claims.Add(claim);
     await _provider.SaveAsync();
 
     return claim.Id;

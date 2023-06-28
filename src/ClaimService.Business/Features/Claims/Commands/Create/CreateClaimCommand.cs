@@ -12,14 +12,14 @@ public record CreateClaimCommand : IRequest<Guid>
   /// Name of the claim.
   /// </summary>
   [Required]
-  [MaxLength(100, ErrorMessage = "Name must be shorter than 100 symbols.")]
+  [MaxLength(50, ErrorMessage = "Name must be shorter than 50 symbols.")]
   public string Name { get; set; }
 
   /// <summary>
   /// Content of the claim.
   /// </summary>
   [Required]
-  [MaxLength(2000, ErrorMessage = "Content must be shorter than 2000 symbols.")]
+  [MaxLength(500, ErrorMessage = "Content must be shorter than 500 symbols.")]
   public string Content { get; set; }
 
   /// <summary>
