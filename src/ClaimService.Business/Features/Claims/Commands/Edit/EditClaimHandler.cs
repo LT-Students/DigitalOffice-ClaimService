@@ -60,7 +60,7 @@ public class EditClaimHandler : IRequestHandler<EditClaimCommand, Unit>
 
     foreach (Operation<EditClaimRequest> item in patch.Operations)
     {
-      claimPatch.Operations.Add(new Operation<DbClaim>(item.op, item.path, item.from, item.value));
+      claimPatch.Operations.Add(new Operation<DbClaim>(item.op, item.path, item.from, item.value.ToString().Trim()));
     }
 
     return claimPatch;
