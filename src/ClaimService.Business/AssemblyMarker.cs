@@ -1,3 +1,3 @@
 ﻿namespace LT.DigitalOffice.ClaimService.Business;
 
-public class AssemblyMarker {}
+public class AssemblyMarker { }

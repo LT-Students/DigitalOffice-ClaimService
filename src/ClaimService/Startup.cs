@@ -1,9 +1,5 @@
-﻿using FluentValidation;
-using HealthChecks.UI.Client;
-using LT.DigitalOffice.ClaimService.Business;
-using LT.DigitalOffice.ClaimService.DataLayer;
+﻿using HealthChecks.UI.Client;
 using LT.DigitalOffice.ClaimService.Models.Dto.Configurations;
-using LT.DigitalOffice.Kernel.Behaviours;
 using LT.DigitalOffice.Kernel.BrokerSupport.Configurations;
 using LT.DigitalOffice.Kernel.BrokerSupport.Extensions;
 using LT.DigitalOffice.Kernel.BrokerSupport.Middlewares.Token;
@@ -12,7 +8,6 @@ using LT.DigitalOffice.Kernel.EFSupport.Extensions;
 using LT.DigitalOffice.Kernel.EFSupport.Helpers;
 using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Middlewares.ApiInformation;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace ClaimService;
@@ -48,7 +40,7 @@ public class Startup : BaseApiInfo
       .GetSection(BaseRabbitMqConfig.SectionName)
       .Get<RabbitMqConfig>();
 
-    Version = "1.0";
+    Version = "1.0.0.0";
     Description = "ClaimService is an API that intended to work with claims.";
     StartTime = DateTime.UtcNow;
     ApiName = $"LT Digital Office - {_serviceInfoConfig.Name}";
@@ -90,38 +82,12 @@ public class Startup : BaseApiInfo
 
     services.ConfigureMassTransit(_rabbitMqConfig);
 
-    services
-      .AddControllers()
+    services.AddControllers()
       .AddJsonOptions(options =>
       {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
       })
-      .AddNewtonsoftJson()
-      .ConfigureApiBehaviorOptions(options =>
-      {
-        options.SuppressMapClientErrors = true;
-      });
-
-    services.AddValidatorsFromAssembly(typeof(AssemblyMarker).Assembly);
-    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
-
-    services.AddSwaggerGen(options =>
-    {
-      options.SwaggerDoc($"{Version}", new OpenApiInfo
-      {
-        Version = Version,
-        Title = _serviceInfoConfig.Name,
-        Description = Description
-      });
-
-      string controllersXmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-      string modelsXmlFileName = $"{Assembly.GetAssembly(typeof(AssemblyMarker)).GetName().Name}.xml";
-
-      options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, controllersXmlFileName));
-      options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, modelsXmlFileName));
-
-      options.EnableAnnotations();
-    });
+      .AddNewtonsoftJson();
   }
 
   public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -136,12 +102,6 @@ public class Startup : BaseApiInfo
 
     app.UseRouting();
 
-    app.UseSwagger()
-      .UseSwaggerUI(options =>
-      {
-        options.SwaggerEndpoint($"/claimservice/swagger/{Version}/swagger.json", $"{Version}");
-      });
-
     app.UseMiddleware<TokenMiddleware>();
 
     app.UseCors(CorsPolicyName);
@@ -149,7 +109,7 @@ public class Startup : BaseApiInfo
     app.UseEndpoints(endpoints =>
     {
       endpoints.MapControllers().RequireCors(CorsPolicyName);
-      endpoints.MapHealthChecks($"/hc", new HealthCheckOptions
+      endpoints.MapHealthChecks($"/{_serviceInfoConfig.Id}/hc", new HealthCheckOptions
       {
         ResultStatusCodes = new Dictionary<HealthStatus, int>
         {

@@ -3,7 +3,7 @@
   <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
 
   <ItemGroup>
-    <ProjectReference Include="..\ClaimService.Data\ClaimService.DataLayer.csproj" />
+    <ProjectReference Include="..\ClaimService.DataLayer\ClaimService.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>
