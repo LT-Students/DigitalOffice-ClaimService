@@ -1,4 +1,5 @@
 ﻿using HealthChecks.UI.Client;
+using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.ClaimService.Models.Dto.Configurations;
 using LT.DigitalOffice.Kernel.BrokerSupport.Configurations;
 using LT.DigitalOffice.Kernel.BrokerSupport.Extensions;
