@@ -6,10 +6,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ClaimService.Data\ClaimService.Data.csproj" />
-    <ProjectReference Include="..\ClaimService.Mappers\ClaimService.Mappers.csproj" />
-    <ProjectReference Include="..\ClaimService.Models.Db\ClaimService.Models.Db.csproj" />
-  </ItemGroup>
-
 </Project>
