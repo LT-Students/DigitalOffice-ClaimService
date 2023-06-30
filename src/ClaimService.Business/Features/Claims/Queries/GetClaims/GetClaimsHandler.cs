@@ -101,9 +101,9 @@ public class GetClaimsHandler : IRequestHandler<GetClaimsQuery, FindResult<Claim
 
     return (
       await claims
-      .Skip(query.SkipCount)
-      .Take(query.TakeCount)
-      .ToListAsync(ct),
+        .Skip(query.SkipCount)
+        .Take(query.TakeCount)
+        .ToListAsync(ct),
       await claims.CountAsync(ct));
   }
 }
