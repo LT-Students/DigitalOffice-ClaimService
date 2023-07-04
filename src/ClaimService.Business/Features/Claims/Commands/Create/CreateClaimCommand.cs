@@ -25,8 +25,8 @@ public record CreateClaimCommand : IRequest<Guid>
   /// <summary>
   /// Priority of the claim.
   /// </summary>
-  [DefaultValue(ClaimPriority.Major)]
-  public ClaimPriority Priority { get; set; } = ClaimPriority.Major;
+  [DefaultValue(ClaimPriority.Normal)]
+  public ClaimPriority Priority { get; set; } = ClaimPriority.Normal;
 
   /// <summary>
   /// Deadline of the claim.
