@@ -23,6 +23,18 @@ public record GetClaimsQuery : BaseFindFilter, IRequest<FindResult<ClaimInfo>>
   public string NameIncludeSubstring { get; set; }
 
   /// <summary>
+  /// Flag whether to include deactivated categories.
+  /// </summary>
+  [FromQuery(Name = "IncludeDeactivated")]
+  public bool IncludeDeactivated { get; set; }
+
+  /// <summary>
+  /// If of the category that claims must have.
+  /// </summary>
+  [FromQuery(Name = "CategoryId")]
+  public Guid? CategoryId { get; set; }
+
+  /// <summary>
   /// Priority that claims must have.
   /// </summary>
   [FromQuery(Name = "Priority")]

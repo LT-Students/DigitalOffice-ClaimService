@@ -1,4 +1,5 @@
-﻿using LT.DigitalOffice.ClaimService.Business.Shared.Enums;
+﻿using LT.DigitalOffice.ClaimService.Business.Features.Categories.Queries.GetCategory;
+using LT.DigitalOffice.ClaimService.Business.Shared.Enums;
 using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.ClaimService.DataLayer.Models;
 using LT.DigitalOffice.Kernel.BrokerSupport.AccessValidatorEngine.Interfaces;
@@ -45,6 +46,7 @@ public class GetClaimHandler : IRequestHandler<GetClaimQuery, ClaimResponse>
   private Task<DbClaim> GetAsync(GetClaimQuery query, CancellationToken ct)
   {
     return _provider.Claims.AsNoTracking()
+      .Include(c => c.Category)
       .Where(c => c.Id == query.ClaimId)
       .FirstOrDefaultAsync(ct);
   }
@@ -56,11 +58,20 @@ public class GetClaimHandler : IRequestHandler<GetClaimQuery, ClaimResponse>
       Id = claim.Id,
       Name = claim.Name,
       Content = claim.Content,
+      CategoryId = claim.CategoryId,
       Status = (ClaimStatus)claim.Status,
       Priority = (ClaimPriority)claim.Priority,
       DeadLine = claim.DeadLine,
+      IsActive = claim.IsActive,
       CreatedBy = claim.CreatedBy,
-      CreatedAtUtc = claim.CreatedAtUtc
+      CreatedAtUtc = claim.CreatedAtUtc,
+      Category = new CategoryResponse
+      {
+        Id = claim.Category.Id,
+        Name = claim.Category.Name,
+        Color = (Color)claim.Category.Color,
+        IsActive = claim.Category.IsActive
+      }
     };
   }
 }

@@ -23,6 +23,12 @@ public record CreateClaimCommand : IRequest<Guid>
   public string Content { get; set; }
 
   /// <summary>
+  /// Id of category of the claim.
+  /// </summary>
+  [Required]
+  public Guid CategoryId { get; set; }
+
+  /// <summary>
   /// Priority of the claim.
   /// </summary>
   [DefaultValue(ClaimPriority.Normal)]

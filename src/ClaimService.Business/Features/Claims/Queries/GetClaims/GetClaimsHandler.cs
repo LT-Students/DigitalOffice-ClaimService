@@ -49,9 +49,11 @@ public class GetClaimsHandler : IRequestHandler<GetClaimsQuery, FindResult<Claim
       Id = claim.Id,
       Name = claim.Name,
       Content = claim.Content,
+      CategoryId = claim.CategoryId,
       Status = (ClaimStatus)claim.Status,
       Priority = (ClaimPriority)claim.Priority,
       DeadLine = claim.DeadLine,
+      IsActive = claim.IsActive,
       CreatedBy = claim.CreatedBy,
       CreatedAtUtc = claim.CreatedAtUtc,
     };
@@ -65,11 +67,21 @@ public class GetClaimsHandler : IRequestHandler<GetClaimsQuery, FindResult<Claim
       ? _provider.Claims.AsNoTracking()
       : _provider.Claims.AsNoTracking().Where(c => c.CreatedBy == senderId);
 
+    if (!query.IncludeDeactivated)
+    {
+      claims = claims.Where(c => c.IsActive);
+    }
+
     if (!string.IsNullOrWhiteSpace(query.NameIncludeSubstring))
     {
       claims = claims.Where(c =>
         c.Content.Contains(query.NameIncludeSubstring) ||
         c.Name.Contains(query.NameIncludeSubstring));
+    }
+
+    if (query.CategoryId.HasValue)
+    {
+      claims = claims.Where(c => c.CategoryId == query.CategoryId);
     }
 
     if (query.Priority.HasValue)
