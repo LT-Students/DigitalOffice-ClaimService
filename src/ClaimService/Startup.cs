@@ -1,6 +1,8 @@
-﻿using FluentValidation;
+﻿using AspNetCoreRateLimit;
+using FluentValidation;
 using HealthChecks.UI.Client;
 using LT.DigitalOffice.ClaimService.Business;
+using LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Create;
 using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.ClaimService.Models.Dto.Configurations;
 using LT.DigitalOffice.Kernel.Behaviours;
@@ -20,8 +22,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace ClaimService;
@@ -66,22 +71,45 @@ public class Startup : BaseApiInfo
         });
     });
 
-    string dbConnStr = ConnectionStringHandler.Get(Configuration);
+    services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
+    services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
+    services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
 
+    services.AddMediatR(configuration =>
+    {
+      configuration.RegisterServicesFromAssemblyContaining(typeof(AssemblyMarker));
+    });
+
+    services.AddHttpContextAccessor()
+      .AddControllers()
+      .AddJsonOptions(options =>
+      {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+      })
+      .AddNewtonsoftJson()
+      .ConfigureApiBehaviorOptions(options =>
+      {
+        options.SuppressMapClientErrors = true;
+      });
+
+    string dbConnStr = ConnectionStringHandler.Get(Configuration);
     services.AddDbContext<ClaimServiceDbContext>(options =>
     {
       options.UseSqlServer(dbConnStr);
     });
 
-    services.AddHttpContextAccessor();
-
     services.AddHealthChecks()
       .AddRabbitMqCheck()
       .AddSqlServer(dbConnStr);
 
-    services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
-    services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
-    services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
+    services.AddMemoryCache();
+
+    services.Configure<IpRateLimitOptions>(options =>
+      Configuration.GetSection("IpRateLimitingSettings").Bind(options));
+
+    services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+    services.AddInMemoryRateLimiting();
 
     services.AddBusinessObjects();
 
@@ -90,12 +118,23 @@ public class Startup : BaseApiInfo
     services.AddValidatorsFromAssembly(typeof(AssemblyMarker).Assembly);
     services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
-    services.AddControllers()
-      .AddJsonOptions(options =>
+    services.AddSwaggerGen(options =>
+    {
+      options.SwaggerDoc($"{Version}", new OpenApiInfo
       {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-      })
-      .AddNewtonsoftJson();
+        Version = Version,
+        Title = _serviceInfoConfig.Name,
+        Description = Description
+      });
+
+      string controllersXmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+      string modelsXmlFileName = $"{Assembly.GetAssembly(typeof(AssemblyMarker)).GetName().Name}.xml";
+
+      options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, controllersXmlFileName));
+      options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, modelsXmlFileName));
+
+      options.EnableAnnotations();
+    });
   }
 
   public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -109,6 +148,12 @@ public class Startup : BaseApiInfo
     app.UseApiInformation();
 
     app.UseRouting();
+
+    app.UseSwagger()
+      .UseSwaggerUI(options =>
+      {
+        options.SwaggerEndpoint($"/swagger/{Version}/swagger.json", $"{Version}");
+      });
 
     app.UseMiddleware<TokenMiddleware>();
 
