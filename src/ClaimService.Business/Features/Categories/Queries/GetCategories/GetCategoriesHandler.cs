@@ -60,8 +60,8 @@ public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, FindResu
     if (query.IsAscendingSort.HasValue)
     {
       categories = query.IsAscendingSort.Value
-        ? categories.OrderBy(c => c.Id)
-        : categories.OrderByDescending(c => c.Id);
+        ? categories.OrderBy(c => c.Name)
+        : categories.OrderByDescending(c => c.Name);
     }
 
     return (

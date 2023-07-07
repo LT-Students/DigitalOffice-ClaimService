@@ -25,8 +25,7 @@ public record CreateClaimCommand : IRequest<Guid>
   /// <summary>
   /// Id of category of the claim.
   /// </summary>
-  [Required]
-  public Guid CategoryId { get; set; }
+  public Guid? CategoryId { get; set; }
 
   /// <summary>
   /// Priority of the claim.

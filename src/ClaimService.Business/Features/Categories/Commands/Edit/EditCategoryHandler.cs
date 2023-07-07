@@ -1,4 +1,5 @@
-﻿using LT.DigitalOffice.ClaimService.DataLayer;
+﻿using FluentValidation.Results;
+using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.ClaimService.DataLayer.Models;
 using LT.DigitalOffice.Kernel.BrokerSupport.AccessValidatorEngine.Interfaces;
 using LT.DigitalOffice.Kernel.Exceptions.Models;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,15 +21,18 @@ public class EditCategoryHandler : IRequestHandler<EditCategoryCommand, Unit>
   private readonly IDataProvider _provider;
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly IAccessValidator _accessValidator;
+  private readonly IEditCategoryValidator _validator;
 
   public EditCategoryHandler(
     IDataProvider provider,
     IHttpContextAccessor httpContextAccessor,
-    IAccessValidator accessValidator)
+    IAccessValidator accessValidator,
+    IEditCategoryValidator validator)
   {
     _provider = provider;
     _httpContextAccessor = httpContextAccessor;
     _accessValidator = accessValidator;
+    _validator = validator;
   }
 
   public async Task<Unit> Handle(EditCategoryCommand command, CancellationToken ct)
@@ -35,13 +40,19 @@ public class EditCategoryHandler : IRequestHandler<EditCategoryCommand, Unit>
     DbCategory category = await _provider.Categories.FirstOrDefaultAsync(c => c.Id == command.CategoryId && c.IsActive, ct);
     if (category is null)
     {
-      throw new BadRequestException();
+      throw new BadRequestException("No category with provided wid as found.");
     }
 
     Guid editorId = _httpContextAccessor.HttpContext.GetUserId();
     if (!await _accessValidator.IsAdminAsync(editorId))
     {
-      throw new ForbiddenException();
+      throw new ForbiddenException("Not enough rights to edit category.");
+    }
+
+    ValidationResult validationResult = await _validator.ValidateAsync(command.Patch, ct);
+    if (!validationResult.IsValid)
+    {
+      throw new BadRequestException(validationResult.Errors.Select(e => e.ErrorMessage));
     }
 
     Map(command.Patch).ApplyTo(category);

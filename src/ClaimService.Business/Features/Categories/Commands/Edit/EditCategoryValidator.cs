@@ -48,13 +48,13 @@ public class EditCategoryValidator : BaseEditRequestValidator<EditCategoryReques
 
     #region Color
 
-    await AddFailureForPropertyIfAsync(
+    AddFailureForPropertyIf(
       nameof(EditCategoryRequest.Color),
       x => x == OperationType.Replace,
       new()
       {
         {
-          x => Task.FromResult(x.value is null || !Enum.TryParse(x.value.ToString().Trim(), true, out Color color)),
+          x => x.value is null || !Enum.TryParse(x.value.ToString().Trim(), true, out Color color),
           "Incorrect color value."
         }
       },

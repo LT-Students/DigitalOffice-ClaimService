@@ -23,7 +23,7 @@ public record GetClaimsQuery : BaseFindFilter, IRequest<FindResult<ClaimInfo>>
   public string NameIncludeSubstring { get; set; }
 
   /// <summary>
-  /// Flag whether to include deactivated categories.
+  /// Flag whether to include deactivated claims.
   /// </summary>
   [FromQuery(Name = "IncludeDeactivated")]
   public bool IncludeDeactivated { get; set; }

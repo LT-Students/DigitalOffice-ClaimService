@@ -21,7 +21,7 @@ public record GetCategoriesQuery : BaseFindFilter, IRequest<FindResult<CategoryI
   public bool IncludeDeactivated { get; set; }
 
   /// <summary>
-  /// String that claim name or content must contain.
+  /// String that category name must contain.
   /// </summary>
   [FromQuery(Name = "NameIncludeSubstring")]
   public string NameIncludeSubstring { get; set; }

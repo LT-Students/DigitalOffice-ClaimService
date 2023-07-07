@@ -4,6 +4,7 @@ using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.Kernel.Validators;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading;
@@ -75,15 +76,14 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region CategoryId
 
-    AddFailureForPropertyIf(
+    await AddFailureForPropertyIfAsync(
       nameof(EditClaimRequest.CategoryId),
       x => x == OperationType.Replace,
       new()
       {
         {
-          (x) => x.value is null ||
-            (!Guid.TryParse(x.value.ToString().Trim(), out Guid categoryId) &&
-            _provider.Categories.Any(c => c.Id == categoryId && c.IsActive)),
+          async (x) => x.value is not null && !Guid.TryParse(x.value.ToString().Trim(), out Guid categoryId) &&
+            await _provider.Categories.AnyAsync(c => c.Id == categoryId && c.IsActive),
           "Incorrect category id value."
         }
       });

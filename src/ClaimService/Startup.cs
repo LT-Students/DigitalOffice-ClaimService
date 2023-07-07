@@ -1,6 +1,9 @@
-﻿using HealthChecks.UI.Client;
+﻿using FluentValidation;
+using HealthChecks.UI.Client;
+using LT.DigitalOffice.ClaimService.Business;
 using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.ClaimService.Models.Dto.Configurations;
+using LT.DigitalOffice.Kernel.Behaviours;
 using LT.DigitalOffice.Kernel.BrokerSupport.Configurations;
 using LT.DigitalOffice.Kernel.BrokerSupport.Extensions;
 using LT.DigitalOffice.Kernel.BrokerSupport.Middlewares.Token;
@@ -9,6 +12,7 @@ using LT.DigitalOffice.Kernel.EFSupport.Extensions;
 using LT.DigitalOffice.Kernel.EFSupport.Helpers;
 using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Middlewares.ApiInformation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +45,7 @@ public class Startup : BaseApiInfo
       .GetSection(BaseRabbitMqConfig.SectionName)
       .Get<RabbitMqConfig>();
 
-    Version = "1.0.0.0";
+    Version = "1.0";
     Description = "ClaimService is an API that intended to work with claims.";
     StartTime = DateTime.UtcNow;
     ApiName = $"LT Digital Office - {_serviceInfoConfig.Name}";
@@ -82,6 +86,9 @@ public class Startup : BaseApiInfo
     services.AddBusinessObjects();
 
     services.ConfigureMassTransit(_rabbitMqConfig);
+
+    services.AddValidatorsFromAssembly(typeof(AssemblyMarker).Assembly);
+    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
     services.AddControllers()
       .AddJsonOptions(options =>
