@@ -2,7 +2,6 @@
 using FluentValidation;
 using HealthChecks.UI.Client;
 using LT.DigitalOffice.ClaimService.Business;
-using LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Create;
 using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.ClaimService.Models.Dto.Configurations;
 using LT.DigitalOffice.Kernel.Behaviours;
