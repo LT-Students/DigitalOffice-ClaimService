@@ -1,4 +1,6 @@
 ﻿using AspNetCoreRateLimit;
+using DigitalOffice.Kernel.Configurations;
+using DigitalOffice.Kernel.OpenApi.SchemaFilters;
 using FluentValidation;
 using HealthChecks.UI.Client;
 using LT.DigitalOffice.ClaimService.Business;
@@ -34,6 +36,7 @@ public class Startup : BaseApiInfo
 {
   private readonly BaseServiceInfoConfig _serviceInfoConfig;
   private readonly RabbitMqConfig _rabbitMqConfig;
+  private readonly SwaggerConfiguration _swaggerConfiguration;
   public const string CorsPolicyName = "LtDoCorsPolicy";
   public IConfiguration Configuration { get; }
 
@@ -48,6 +51,10 @@ public class Startup : BaseApiInfo
     _rabbitMqConfig = Configuration
       .GetSection(BaseRabbitMqConfig.SectionName)
       .Get<RabbitMqConfig>();
+
+    _swaggerConfiguration = Configuration
+      .GetSection(SwaggerConfiguration.SectionName)
+      .Get<SwaggerConfiguration>();
 
     Version = "1.0";
     Description = "ClaimService is an API that intended to work with claims.";
@@ -73,6 +80,7 @@ public class Startup : BaseApiInfo
     services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
     services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
     services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
+    services.Configure<SwaggerConfiguration>(Configuration.GetSection(SwaggerConfiguration.SectionName));
 
     services.AddMediatR(configuration =>
     {
@@ -133,6 +141,8 @@ public class Startup : BaseApiInfo
       options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, modelsXmlFileName));
 
       options.EnableAnnotations();
+
+      options.SchemaFilter<JsonPatchDocumentSchemaFilter>();
     });
   }
 
@@ -149,9 +159,9 @@ public class Startup : BaseApiInfo
     app.UseRouting();
 
     app.UseSwagger()
-      .UseSwaggerUI(options =>
-      {
-        options.SwaggerEndpoint($"claimservice/swagger/{Version}/swagger.json", $"{Version}");
+    .UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint($"{_swaggerConfiguration.ServicePath}/swagger/{Version}/swagger.json", $"{Version}");
       });
 
     app.UseMiddleware<TokenMiddleware>();
