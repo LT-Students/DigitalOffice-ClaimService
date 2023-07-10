@@ -7,6 +7,7 @@ namespace LT.DigitalOffice.ClaimService.DataLayer;
 public class ClaimServiceDbContext : DbContext, IDataProvider
 {
   public DbSet<DbClaim> Claims { get; set; }
+  public DbSet<DbCategory> Categories { get; set; }
 
   public ClaimServiceDbContext(DbContextOptions<ClaimServiceDbContext> options)
       : base(options)

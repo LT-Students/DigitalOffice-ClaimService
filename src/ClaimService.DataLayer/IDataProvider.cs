@@ -10,4 +10,5 @@ namespace LT.DigitalOffice.ClaimService.DataLayer;
 public interface IDataProvider : IBaseDataProvider
 {
   public DbSet<DbClaim> Claims { get; set; }
+  public DbSet<DbCategory> Categories { get; set; }
 }

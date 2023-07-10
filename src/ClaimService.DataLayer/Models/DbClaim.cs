@@ -11,6 +11,7 @@ public class DbClaim
   public Guid Id { get; set; }
   public string Name { get; set; }
   public string Content { get; set; }
+  public Guid? CategoryId { get; set; }
   public int Status { get; set; }
   public int Priority { get; set; }
   public DateTime? DeadLine { get; set; }
@@ -19,6 +20,8 @@ public class DbClaim
   public DateTime CreatedAtUtc { get; set; }
   public Guid? ModifiedBy { get; set; }
   public DateTime? ModifiedAtUtc { get; set; }
+
+  public DbCategory Category { get; set; }
 }
 
 public class DbClaimConfiguration : IEntityTypeConfiguration<DbClaim>
@@ -27,6 +30,8 @@ public class DbClaimConfiguration : IEntityTypeConfiguration<DbClaim>
   {
     builder.ToTable(DbClaim.TableName);
 
-    builder.HasKey(t => t.Id);
+    builder.HasKey(c => c.Id);
+
+    builder.HasOne(c => c.Category).WithMany(c => c.Claims);
   }
 }

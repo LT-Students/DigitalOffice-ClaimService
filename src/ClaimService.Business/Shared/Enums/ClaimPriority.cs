@@ -3,6 +3,6 @@
 public enum ClaimPriority
 {
   Minor,
-  Major,
-  Critical
+  Normal,
+  Major
 }

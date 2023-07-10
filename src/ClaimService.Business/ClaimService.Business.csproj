@@ -2,6 +2,12 @@
 
   <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+		<NoWarn>$(NoWarn);1573</NoWarn>
+	</PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\ClaimService.DataLayer\ClaimService.DataLayer.csproj" />
   </ItemGroup>

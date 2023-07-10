@@ -1,5 +1,4 @@
-﻿using LT.DigitalOffice.ClaimService.Business.Shared.Enums;
-using LT.DigitalOffice.ClaimService.DataLayer;
+﻿using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.ClaimService.DataLayer.Models;
 using LT.DigitalOffice.Kernel.Extensions;
 using MediatR;
@@ -10,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Create;
 
-public class CreateClaimHandler : IRequestHandler<CreateClaimCommand, Guid>
+public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Guid>
 {
   private readonly IDataProvider _provider;
   private readonly IHttpContextAccessor _httpContextAccessor;
 
-  public CreateClaimHandler(
+  public CreateCategoryHandler(
     IDataProvider provider,
     IHttpContextAccessor httpContextAccessor)
   {
@@ -23,32 +22,28 @@ public class CreateClaimHandler : IRequestHandler<CreateClaimCommand, Guid>
     _httpContextAccessor = httpContextAccessor;
   }
 
-  public Task<Guid> Handle(CreateClaimCommand request, CancellationToken ct)
+  public Task<Guid> Handle(CreateCategoryCommand command, CancellationToken ct)
   {
     Guid senderId = _httpContextAccessor.HttpContext.GetUserId();
 
-    return CreateAsync(Map(request, senderId));
+    return CreateAsync(Map(command, senderId));
   }
 
-  private async Task<Guid> CreateAsync(DbClaim claim)
+  private async Task<Guid> CreateAsync(DbCategory category)
   {
-    _provider.Claims.Add(claim);
+    _provider.Categories.Add(category);
     await _provider.SaveAsync();
 
-    return claim.Id;
+    return category.Id;
   }
 
-  private DbClaim Map(CreateClaimCommand request, Guid senderId)
+  private DbCategory Map(CreateCategoryCommand command, Guid senderId)
   {
     return new()
     {
       Id = Guid.NewGuid(),
-      Name = request.Name,
-      Content = request.Content,
-      CategoryId = request.CategoryId,
-      Status = (int)ClaimStatus.Created,
-      Priority = (int)request.Priority,
-      DeadLine = request.Deadline,
+      Name = command.Name,
+      Color = (int)command.Color,
       IsActive = true,
       CreatedAtUtc = DateTime.UtcNow,
       CreatedBy = senderId

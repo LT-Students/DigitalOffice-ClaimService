@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
 using LT.DigitalOffice.ClaimService.Business.Shared.Enums;
+using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.Kernel.Validators;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +13,8 @@ namespace LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Edit;
 
 public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IEditClaimValidator
 {
+  private readonly IDataProvider _provider;
+
   private async Task HandleInternalPropertyValidation(
     Operation<EditClaimRequest> requestedOperation,
     ValidationContext<JsonPatchDocument<EditClaimRequest>> context,
@@ -25,6 +29,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
     {
       nameof(EditClaimRequest.Name),
       nameof(EditClaimRequest.Content),
+      nameof(EditClaimRequest.CategoryId),
       nameof(EditClaimRequest.Priority),
       nameof(EditClaimRequest.Status),
       nameof(EditClaimRequest.Deadline),
@@ -32,6 +37,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     AddСorrectOperations(nameof(EditClaimRequest.Name), new() { OperationType.Replace });
     AddСorrectOperations(nameof(EditClaimRequest.Content), new() { OperationType.Replace });
+    AddСorrectOperations(nameof(EditClaimRequest.CategoryId), new() { OperationType.Replace });
     AddСorrectOperations(nameof(EditClaimRequest.Priority), new() { OperationType.Replace });
     AddСorrectOperations(nameof(EditClaimRequest.Status), new() { OperationType.Replace });
     AddСorrectOperations(nameof(EditClaimRequest.Deadline), new() { OperationType.Replace });
@@ -62,6 +68,22 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
         {
           x => x.value is null || x.value?.ToString().Trim().Length < 501,
           "Description is too long."
+        }
+      });
+
+    #endregion
+
+    #region CategoryId
+
+    await AddFailureForPropertyIfAsync(
+      nameof(EditClaimRequest.CategoryId),
+      x => x == OperationType.Replace,
+      new()
+      {
+        {
+          async (x) => x.value is not null && !Guid.TryParse(x.value.ToString().Trim(), out Guid categoryId) &&
+            await _provider.Categories.AnyAsync(c => c.Id == categoryId && c.IsActive),
+          "Incorrect category id value."
         }
       });
 
@@ -119,8 +141,10 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
     #endregion
   }
 
-  public EditClaimValidator()
+  public EditClaimValidator(IDataProvider provider)
   {
+    _provider = provider;
+
     RuleForEach(x => x.Operations)
       .CustomAsync(HandleInternalPropertyValidation);
   }

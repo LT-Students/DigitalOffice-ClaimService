@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using LT.DigitalOffice.ClaimService.Business.Shared.Enums;
 using LT.DigitalOffice.ClaimService.DataLayer;
 using LT.DigitalOffice.ClaimService.DataLayer.Models;
 using LT.DigitalOffice.Kernel.BrokerSupport.AccessValidatorEngine.Interfaces;
@@ -15,20 +14,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Edit;
+namespace LT.DigitalOffice.ClaimService.Business.Features.Categories.Commands.Edit;
 
-public class EditClaimHandler : IRequestHandler<EditClaimCommand, Unit>
+public class EditCategoryHandler : IRequestHandler<EditCategoryCommand, Unit>
 {
   private readonly IDataProvider _provider;
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly IAccessValidator _accessValidator;
-  private readonly IEditClaimValidator _validator;
+  private readonly IEditCategoryValidator _validator;
 
-  public EditClaimHandler(
+  public EditCategoryHandler(
     IDataProvider provider,
     IHttpContextAccessor httpContextAccessor,
     IAccessValidator accessValidator,
-    IEditClaimValidator validator)
+    IEditCategoryValidator validator)
   {
     _provider = provider;
     _httpContextAccessor = httpContextAccessor;
@@ -36,18 +35,18 @@ public class EditClaimHandler : IRequestHandler<EditClaimCommand, Unit>
     _validator = validator;
   }
 
-  public async Task<Unit> Handle(EditClaimCommand command, CancellationToken ct)
+  public async Task<Unit> Handle(EditCategoryCommand command, CancellationToken ct)
   {
-    DbClaim claim = await _provider.Claims.FirstOrDefaultAsync(c => c.Id == command.ClaimId && c.Status != (int)ClaimStatus.Closed, ct);
-    if (claim is null)
+    DbCategory category = await _provider.Categories.FirstOrDefaultAsync(c => c.Id == command.CategoryId && c.IsActive, ct);
+    if (category is null)
     {
-      throw new BadRequestException("No claim with provided id was found");
+      throw new BadRequestException("No category with provided wid as found.");
     }
 
     Guid editorId = _httpContextAccessor.HttpContext.GetUserId();
-    if (claim.CreatedBy != editorId && !await _accessValidator.IsAdminAsync(editorId))
+    if (!await _accessValidator.IsAdminAsync(editorId))
     {
-      throw new ForbiddenException("Not enough rights to edit claim.");
+      throw new ForbiddenException("Not enough rights to edit category.");
     }
 
     ValidationResult validationResult = await _validator.ValidateAsync(command.Patch, ct);
@@ -56,23 +55,23 @@ public class EditClaimHandler : IRequestHandler<EditClaimCommand, Unit>
       throw new BadRequestException(validationResult.Errors.Select(e => e.ErrorMessage));
     }
 
-    Map(command.Patch).ApplyTo(claim);
-    claim.ModifiedBy = editorId;
-    claim.ModifiedAtUtc = DateTime.UtcNow;
+    Map(command.Patch).ApplyTo(category);
+    category.ModifiedBy = editorId;
+    category.ModifiedAtUtc = DateTime.UtcNow;
     await _provider.SaveAsync();
 
     return Unit.Value;
   }
 
-  private JsonPatchDocument<DbClaim> Map(JsonPatchDocument<EditClaimRequest> patch)
+  private JsonPatchDocument<DbCategory> Map(JsonPatchDocument<EditCategoryRequest> patch)
   {
-    JsonPatchDocument<DbClaim> claimPatch = new();
+    JsonPatchDocument<DbCategory> categoryPatch = new();
 
-    foreach (Operation<EditClaimRequest> item in patch.Operations)
+    foreach (Operation<EditCategoryRequest> item in patch.Operations)
     {
-      claimPatch.Operations.Add(new Operation<DbClaim>(item.op, item.path, item.from, item.value.ToString().Trim()));
+      categoryPatch.Operations.Add(new Operation<DbCategory>(item.op, item.path, item.from, item.value.ToString().Trim()));
     }
 
-    return claimPatch;
+    return categoryPatch;
   }
 }
