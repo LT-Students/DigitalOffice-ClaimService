@@ -11,10 +11,9 @@ namespace LT.DigitalOffice.ClaimService.Business.Features.Categories.Commands.Ed
 
 public class EditCategoryValidator : BaseEditRequestValidator<EditCategoryRequest>, IEditCategoryValidator
 {
-  private async Task HandleInternalPropertyValidation(
+  private void HandleInternalPropertyValidation(
     Operation<EditCategoryRequest> requestedOperation,
-    ValidationContext<JsonPatchDocument<EditCategoryRequest>> context,
-    CancellationToken cancellationToken)
+    ValidationContext<JsonPatchDocument<EditCategoryRequest>> context)
   {
     RequestedOperation = requestedOperation;
     Context = context;
@@ -66,6 +65,6 @@ public class EditCategoryValidator : BaseEditRequestValidator<EditCategoryReques
   public EditCategoryValidator()
   {
     RuleForEach(x => x.Operations)
-      .CustomAsync(HandleInternalPropertyValidation);
+      .Custom(HandleInternalPropertyValidation);
   }
 }
