@@ -12,6 +12,7 @@ public class DbClaim
   public string Name { get; set; }
   public string Content { get; set; }
   public Guid? CategoryId { get; set; }
+  public Guid? DepartmentId { get; set; }
   public int Status { get; set; }
   public int Priority { get; set; }
   public DateTime? DeadLine { get; set; }

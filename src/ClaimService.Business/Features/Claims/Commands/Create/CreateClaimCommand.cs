@@ -28,6 +28,11 @@ public record CreateClaimCommand : IRequest<Guid>
   public Guid? CategoryId { get; set; }
 
   /// <summary>
+  /// Id of department the claim will be assigned to.
+  /// </summary>
+  public Guid? DepartmentId { get; set; }
+
+  /// <summary>
   /// Priority of the claim.
   /// </summary>
   [DefaultValue(ClaimPriority.Normal)]

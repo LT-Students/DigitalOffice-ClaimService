@@ -46,6 +46,7 @@ public class CreateClaimHandler : IRequestHandler<CreateClaimCommand, Guid>
       Name = request.Name,
       Content = request.Content,
       CategoryId = request.CategoryId,
+      DepartmentId = request.DepartmentId,
       Status = (int)ClaimStatus.Created,
       Priority = (int)request.Priority,
       DeadLine = request.Deadline,

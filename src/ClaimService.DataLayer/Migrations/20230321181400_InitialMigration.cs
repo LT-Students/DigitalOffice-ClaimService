@@ -19,6 +19,7 @@ public class CreateClaims : Migration
         Name = table.Column<string>(nullable: false),
         Content = table.Column<string>(nullable: false),
         CategoryId = table.Column<Guid>(nullable: true),
+        DepartmentId = table.Column<Guid>(nullable: true),
         Status = table.Column<int>(nullable: false),
         Priority = table.Column<int>(nullable: false),
         DeadLine = table.Column<DateTime>(nullable: true),
