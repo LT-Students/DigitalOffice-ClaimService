@@ -47,7 +47,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
     AddСorrectOperations(nameof(EditClaimRequest.Status), new() { OperationType.Replace });
     AddСorrectOperations(nameof(EditClaimRequest.Deadline), new() { OperationType.Replace });
 
-    #endregion'
+    #endregion
 
     #region Name
 
