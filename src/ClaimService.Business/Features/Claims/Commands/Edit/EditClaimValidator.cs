@@ -102,8 +102,8 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       new()
       {
         {
-          async (x) => x.value is not null && !Guid.TryParse(x.value.ToString().Trim(), out Guid categoryId) &&
-            !await _departmentService.DoesDepartmentExist(new List<Guid> { categoryId }),
+          async (x) => x.value is not null && !Guid.TryParse(x.value.ToString().Trim(), out Guid departmentId) &&
+            !await _departmentService.DoesDepartmentExist(new List<Guid> { departmentId }),
           "Incorrect department id value."
         }
       });
