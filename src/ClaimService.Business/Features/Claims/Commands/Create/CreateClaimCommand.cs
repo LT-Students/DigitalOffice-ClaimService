@@ -42,4 +42,14 @@ public record CreateClaimCommand : IRequest<Guid>
   /// Deadline of the claim.
   /// </summary>
   public DateTime? Deadline { get; set; }
+
+  /// <summary>
+  /// Id of user responsible for the claim.
+  /// </summary>
+  public Guid? ResponsibleUserId { get; set; }
+
+  /// <summary>
+  /// Claim creator's manager user id.
+  /// </summary>
+  public Guid ManagerUserId { get; set; }
 }

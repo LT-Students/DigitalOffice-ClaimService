@@ -2,9 +2,12 @@
 using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
 using LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Create;
 using LT.DigitalOffice.ClaimService.DataLayer;
+using LT.DigitalOffice.Kernel.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LT.DigitalOffice.ClaimService.Validation.Claim;
 
@@ -12,7 +15,10 @@ public class CreateClaimValidator : AbstractValidator<CreateClaimCommand>
 {
   public CreateClaimValidator(
     IDataProvider provider,
-    IDepartmentService departmentService)
+    IDepartmentService departmentService,
+    IProjectService projectService,
+    IUserService userService,
+    IHttpContextAccessor httpContextAccessor)
   {
     RuleFor(r => r.Priority)
       .IsInEnum()
@@ -38,5 +44,21 @@ public class CreateClaimValidator : AbstractValidator<CreateClaimCommand>
         .MustAsync((id, ct) => departmentService.DoesDepartmentExist(new List<Guid> { id.Value }))
         .WithMessage("No department with provided id was found.");
     });
+
+    RuleFor(r => r.ManagerUserId)
+      .MustAsync(async (id, ct) =>
+      {
+        Guid creatorId = httpContextAccessor.HttpContext.GetUserId();
+
+        List<Guid> departmentManagers = await departmentService.GetDepartmentManagersByUserId(creatorId);
+        List<Guid> projectManagers = await projectService.GetProjectManagersByUserId(creatorId);
+
+        return departmentManagers.Union(projectManagers).Any(m => m == id);
+      })
+      .WithMessage("There is no project or department manager with provided id.");
+
+    RuleFor(r => r.ResponsibleUserId)
+      .MustAsync((id, _) => userService.DoesUserExist(id.Value))
+      .WithMessage("User with provided id doesn't exist.");
   }
 }

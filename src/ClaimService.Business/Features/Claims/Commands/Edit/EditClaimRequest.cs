@@ -12,4 +12,6 @@ public record EditClaimRequest
   public ClaimPriority? Priority { get; set; }
   public ClaimStatus? Status { get; set; }
   public DateTime? Deadline { get; set; }
+  public Guid? ResponsibleUserId { get; set; }
+  public Guid? ManagerUserId { get; set; }
 }

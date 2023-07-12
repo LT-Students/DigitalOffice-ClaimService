@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 namespace LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
 
 [AutoInject]
-public interface IDepartmentService
+public interface IProjectService
 {
-  Task<bool> DoesDepartmentExist(List<Guid> departmentIds);
-
-  Task<List<Guid>> GetDepartmentManagersByUserId(Guid userId);
+  Task<List<Guid>> GetProjectManagersByUserId(Guid userId);
 }

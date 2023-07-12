@@ -1,5 +1,4 @@
-﻿using DigitalOffice.Models.Broker.Models.User;
-using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
+﻿using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
 using LT.DigitalOffice.Kernel.BrokerSupport.Helpers;
 using LT.DigitalOffice.Models.Broker.Requests.User;
 using LT.DigitalOffice.Models.Broker.Responses.User;
@@ -20,15 +19,15 @@ public class UserService : IUserService
     _rcGetUsersData = rcGetUsersData;
   }
 
-  public async Task<List<UserData>> GetUsersDataAsync(List<Guid> usersIds)
+  public async Task<bool> DoesUserExist(Guid userId)
   {
-    if (usersIds is null || !usersIds.Any())
+    if (userId == default)
     {
-      return null;
+      return false;
     }
 
     return (await _rcGetUsersData.ProcessRequest<IGetUsersDataRequest, IGetUsersDataResponse>(
-      IGetUsersDataRequest.CreateObj(usersIds)))
-      ?.UsersData;
+      IGetUsersDataRequest.CreateObj(new List<Guid> { userId }))).UsersData
+      .Any(u => u.Id == userId);
   }
 }

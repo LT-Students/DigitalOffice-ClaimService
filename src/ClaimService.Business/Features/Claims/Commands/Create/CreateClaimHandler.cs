@@ -50,6 +50,8 @@ public class CreateClaimHandler : IRequestHandler<CreateClaimCommand, Guid>
       Status = (int)ClaimStatus.Created,
       Priority = (int)request.Priority,
       DeadLine = request.Deadline,
+      ResponsibleUserId = request.ResponsibleUserId,
+      ManagerUserId = request.ManagerUserId,
       IsActive = true,
       CreatedAtUtc = DateTime.UtcNow,
       CreatedBy = senderId
