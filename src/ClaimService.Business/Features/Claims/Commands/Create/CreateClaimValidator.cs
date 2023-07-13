@@ -57,8 +57,11 @@ public class CreateClaimValidator : AbstractValidator<CreateClaimCommand>
       })
       .WithMessage("There is no project or department manager with provided id.");
 
-    RuleFor(r => r.ResponsibleUserId)
+    When(r => r.ResponsibleUserId.HasValue, () =>
+    {
+      RuleFor(r => r.ResponsibleUserId)
       .MustAsync((id, _) => userService.DoesUserExist(id.Value))
       .WithMessage("User with provided id doesn't exist.");
+    });
   }
 }

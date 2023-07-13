@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Broker.Requests;
+
 public class ProjectService : IProjectService
 {
   private readonly IRequestClient<IGetProjectsRequest> _rcGetProjectUsers;
