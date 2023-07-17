@@ -1,6 +1,7 @@
 ﻿using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
 using LT.DigitalOffice.Kernel.BrokerSupport.Helpers;
 using LT.DigitalOffice.Models.Broker.Enums;
+using LT.DigitalOffice.Models.Broker.Models.Project;
 using LT.DigitalOffice.Models.Broker.Requests.Project;
 using LT.DigitalOffice.Models.Broker.Responses.Project;
 using MassTransit;
@@ -27,12 +28,16 @@ public class ProjectService : IProjectService
       return new List<Guid>();
     }
 
-    return (await _rcGetProjectUsers.ProcessRequest<IGetProjectsRequest, IGetProjectsResponse>(
-      IGetProjectsUsersRequest.CreateObj(usersIds: new List<Guid> { userId }, isActive: true))).Projects
-      .SelectMany(p => p.Users)
-      .Where(u => u.ProjectUserRole == ProjectUserRoleType.Manager)
-      .Select(u => u.UserId)
-      .Distinct()
-      .ToList();
+    List<ProjectData> result = (await _rcGetProjectUsers.ProcessRequest<IGetProjectsRequest, IGetProjectsResponse>(
+      IGetProjectsUsersRequest.CreateObj(usersIds: new List<Guid> { userId }, isActive: true)))?.Projects;
+
+    return result is null
+      ? new()
+      : result
+        .SelectMany(p => p.Users)
+        .Where(u => u.ProjectUserRole == ProjectUserRoleType.Manager)
+        .Select(u => u.UserId)
+        .Distinct()
+        .ToList();
   }
 }

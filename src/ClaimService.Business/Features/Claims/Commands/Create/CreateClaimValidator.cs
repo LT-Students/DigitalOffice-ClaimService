@@ -46,7 +46,7 @@ public class CreateClaimValidator : AbstractValidator<CreateClaimCommand>
     });
 
     RuleFor(r => r.ManagerUserId)
-      .MustAsync(async (id, ct) =>
+      .MustAsync(async (id, _) =>
       {
         Guid creatorId = httpContextAccessor.HttpContext.GetUserId();
 

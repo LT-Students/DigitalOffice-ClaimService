@@ -1,6 +1,7 @@
 ﻿using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
 using LT.DigitalOffice.Kernel.BrokerSupport.Helpers;
 using LT.DigitalOffice.Models.Broker.Enums;
+using LT.DigitalOffice.Models.Broker.Models.Department;
 using LT.DigitalOffice.Models.Broker.Requests.Department;
 using LT.DigitalOffice.Models.Broker.Responses.Department;
 using MassTransit;
@@ -38,12 +39,16 @@ public class DepartmentService : IDepartmentService
       return new List<Guid>();
     }
 
-    return (await _rcGetDepartments.ProcessRequest<IGetDepartmentsRequest, IGetDepartmentsResponse>(
-      IGetDepartmentsRequest.CreateObj(usersIds: new List<Guid> { userId }))).Departments
-      .SelectMany(x => x.Users)
-      .Where(u => u.Role == DepartmentUserRole.Manager)
-      .Select(u => u.UserId)
-      .Distinct()
-      .ToList();
+    List<DepartmentData> result = (await _rcGetDepartments.ProcessRequest<IGetDepartmentsRequest, IGetDepartmentsResponse>(
+      IGetDepartmentsRequest.CreateObj(usersIds: new List<Guid> { userId })))?.Departments;
+
+    return result is null
+      ? new()
+      : result
+        .SelectMany(x => x.Users)
+        .Where(u => u.Role == DepartmentUserRole.Manager)
+        .Select(u => u.UserId)
+        .Distinct()
+        .ToList();
   }
 }
