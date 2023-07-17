@@ -2,12 +2,15 @@
 using LT.DigitalOffice.ClaimService.Broker.Requests.Interfaces;
 using LT.DigitalOffice.ClaimService.Business.Shared.Enums;
 using LT.DigitalOffice.ClaimService.DataLayer;
+using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Validators;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +20,9 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 {
   private readonly IDataProvider _provider;
   private readonly IDepartmentService _departmentService;
+  private readonly IUserService _userService;
+  private readonly IProjectService _projectService;
+  private readonly IHttpContextAccessor _httpContextAccessor;
 
   private async Task HandleInternalPropertyValidation(
     Operation<EditClaimRequest> requestedOperation,
@@ -37,6 +43,8 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       nameof(EditClaimRequest.Priority),
       nameof(EditClaimRequest.Status),
       nameof(EditClaimRequest.Deadline),
+      nameof(EditClaimRequest.ResponsibleUserId),
+      nameof(EditClaimRequest.ManagerUserId),
     });
 
     AddСorrectOperations(nameof(EditClaimRequest.Name), new() { OperationType.Replace });
@@ -46,6 +54,8 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
     AddСorrectOperations(nameof(EditClaimRequest.Priority), new() { OperationType.Replace });
     AddСorrectOperations(nameof(EditClaimRequest.Status), new() { OperationType.Replace });
     AddСorrectOperations(nameof(EditClaimRequest.Deadline), new() { OperationType.Replace });
+    AddСorrectOperations(nameof(EditClaimRequest.ResponsibleUserId), new() { OperationType.Replace });
+    AddСorrectOperations(nameof(EditClaimRequest.ManagerUserId), new() { OperationType.Replace });
 
     #endregion
 
@@ -72,7 +82,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       {
         {
           x => x.value is null || x.value?.ToString().Trim().Length < 501,
-          "Description is too long."
+          "Content is too long."
         }
       });
 
@@ -86,8 +96,8 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       new()
       {
         {
-          async (x) => x.value is not null && Guid.TryParse(x.value.ToString().Trim(), out Guid categoryId) &&
-            !await _provider.Categories.AnyAsync(c => c.Id == categoryId && c.IsActive),
+          async (x) => x.value is null || (Guid.TryParse(x.value.ToString().Trim(), out Guid categoryId) &&
+            await _provider.Categories.AnyAsync(c => c.Id == categoryId && c.IsActive)),
           "Incorrect category id value."
         }
       });
@@ -102,8 +112,8 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       new()
       {
         {
-          async (x) => x.value is not null && Guid.TryParse(x.value.ToString().Trim(), out Guid departmentId) &&
-            !await _departmentService.DoesDepartmentExist(new List<Guid> { departmentId }),
+          async (x) => x.value is null || (Guid.TryParse(x.value.ToString().Trim(), out Guid departmentId) &&
+            await _departmentService.DoesDepartmentExist(new List<Guid> { departmentId })),
           "Incorrect department id value."
         }
       });
@@ -112,13 +122,13 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region Priority
 
-    await AddFailureForPropertyIfAsync(
+    AddFailureForPropertyIf(
       nameof(EditClaimRequest.Priority),
       x => x == OperationType.Replace,
       new()
       {
         {
-          x => Task.FromResult(x.value is null || !Enum.TryParse(x.value.ToString().Trim(), true, out ClaimPriority priority)),
+          x => Enum.TryParse(x.value.ToString().Trim(), true, out ClaimPriority priority) && Enum.IsDefined(priority),
           "Incorrect claim priority value."
         }
       },
@@ -128,13 +138,13 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region Status
 
-    await AddFailureForPropertyIfAsync(
+    AddFailureForPropertyIf(
       nameof(EditClaimRequest.Status),
       x => x == OperationType.Replace,
       new()
       {
         {
-          x => Task.FromResult(x.value is null || !Enum.TryParse(x.value.ToString().Trim(), true, out ClaimStatus priority)),
+          x => Enum.TryParse(x.value.ToString().Trim(), true, out ClaimStatus status) && Enum.IsDefined(status),
           "Incorrect claim status value."
         }
       },
@@ -150,12 +160,42 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       new()
       {
         {
-          x => DateTime.TryParse(x.value?.ToString().Trim(), out DateTime deadline),
-          "Incorrect is active value."
-        },
+          x => DateTime.TryParse(x.value?.ToString().Trim(), out DateTime deadline) && DateTime.Parse(x.value?.ToString().Trim()) > DateTime.UtcNow,
+          "Incorrect deadline value."
+        }
+      });
+
+    #endregion
+
+    #region ResponsibleUserId
+
+    await AddFailureForPropertyIfAsync(
+      nameof(EditClaimRequest.ResponsibleUserId),
+      x => x == OperationType.Replace,
+      new()
+      {
         {
-          x => DateTime.Parse(x.value?.ToString().Trim()) > DateTime.UtcNow,
-          "Deadline value must be after current time."
+          async (x) => x.value is null || (Guid.TryParse(x.value.ToString().Trim(), out Guid userId) &&
+            await _userService.DoesUserExist(userId)),
+          "Incorrect responsible user id value."
+        }
+      });
+
+    #endregion
+
+    #region ManagerUserId
+
+    await AddFailureForPropertyIfAsync(
+      nameof(EditClaimRequest.ManagerUserId),
+      x => x == OperationType.Replace,
+      new()
+      {
+        {
+          async (x) => Guid.TryParse(x.value.ToString().Trim(), out Guid departmentId) &&
+            (await _departmentService.GetDepartmentManagersByUserId(_httpContextAccessor.HttpContext.GetUserId())).Union(
+              await _projectService.GetProjectManagersByUserId(_httpContextAccessor.HttpContext.GetUserId()))
+            .Any(id => id == departmentId),
+          "Incorrect manager user id value."
         }
       });
 
@@ -164,10 +204,16 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
   public EditClaimValidator(
     IDataProvider provider,
-    IDepartmentService departmentService)
+    IDepartmentService departmentService,
+    IUserService userService,
+    IProjectService projectService,
+    IHttpContextAccessor httpContextAccessor)
   {
     _provider = provider;
     _departmentService = departmentService;
+    _userService = userService;
+    _projectService = projectService;
+    _httpContextAccessor = httpContextAccessor;
 
     RuleForEach(x => x.Operations)
       .CustomAsync(HandleInternalPropertyValidation);

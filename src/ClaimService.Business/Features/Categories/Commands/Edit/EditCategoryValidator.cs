@@ -53,7 +53,7 @@ public class EditCategoryValidator : BaseEditRequestValidator<EditCategoryReques
       new()
       {
         {
-          x => x.value is null || !Enum.TryParse(x.value.ToString().Trim(), true, out Color color),
+          x => x.value is null || (Enum.TryParse(x.value.ToString().Trim(), true, out Color color) && Enum.IsDefined(color)),
           "Incorrect color value."
         }
       },
