@@ -1,18 +1,16 @@
 ﻿using LT.DigitalOffice.ClaimService.Business.Shared.Enums;
-using MediatR;
-using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Create;
+namespace LT.DigitalOffice.ClaimService.Business.Features.Categories.Commands.Update;
 
-public record CreateCategoryCommand : IRequest<Guid>
+public record UpdateCategoryRequest
 {
   /// <summary>
   /// Name of the category.
   /// </summary>
-  [Required]
   [MinLength(1, ErrorMessage = "Name must be not empty.")]
   [MaxLength(20, ErrorMessage = "Name must be shorter than 20 symbols.")]
+  [Required]
   public string Name { get; set; }
 
   /// <summary>

@@ -1,12 +1,10 @@
 ﻿using LT.DigitalOffice.ClaimService.Business.Shared.Enums;
-using MediatR;
 using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Create;
+namespace LT.DigitalOffice.ClaimService.Business.Features.Claims.Commands.Update;
 
-public record CreateClaimCommand : IRequest<Guid>
+public record UpdateClaimRequest
 {
   /// <summary>
   /// Name of the claim.
@@ -37,8 +35,8 @@ public record CreateClaimCommand : IRequest<Guid>
   /// <summary>
   /// Priority of the claim.
   /// </summary>
-  [DefaultValue(ClaimPriority.Normal)]
-  public ClaimPriority Priority { get; set; } = ClaimPriority.Normal;
+  [Required]
+  public ClaimPriority Priority { get; set; }
 
   /// <summary>
   /// Deadline of the claim.
@@ -53,5 +51,6 @@ public record CreateClaimCommand : IRequest<Guid>
   /// <summary>
   /// Claim creator's manager user id.
   /// </summary>
+  [Required]
   public Guid ManagerUserId { get; set; }
 }

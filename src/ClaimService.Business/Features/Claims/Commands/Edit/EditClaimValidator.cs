@@ -34,7 +34,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region Paths
 
-    AddСorrectPaths(new()
+    AddCorrectPaths(new()
     {
       nameof(EditClaimRequest.Name),
       nameof(EditClaimRequest.Content),
@@ -47,21 +47,21 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
       nameof(EditClaimRequest.ManagerUserId),
     });
 
-    AddСorrectOperations(nameof(EditClaimRequest.Name), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditClaimRequest.Content), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditClaimRequest.CategoryId), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditClaimRequest.DepartmentId), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditClaimRequest.Priority), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditClaimRequest.Status), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditClaimRequest.Deadline), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditClaimRequest.ResponsibleUserId), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditClaimRequest.ManagerUserId), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.Name), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.Content), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.CategoryId), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.DepartmentId), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.Priority), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.Status), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.Deadline), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.ResponsibleUserId), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditClaimRequest.ManagerUserId), new() { OperationType.Replace });
 
     #endregion
 
     #region Name
 
-    AddFailureForPropertyIf(
+    AddFailureForPropertyIfNot(
       nameof(EditClaimRequest.Name),
       x => x == OperationType.Replace,
       new()
@@ -75,7 +75,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region Content
 
-    AddFailureForPropertyIf(
+    AddFailureForPropertyIfNot(
       nameof(EditClaimRequest.Content),
       x => x == OperationType.Replace,
       new()
@@ -90,7 +90,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region CategoryId
 
-    await AddFailureForPropertyIfAsync(
+    await AddFailureForPropertyIfNotAsync(
       nameof(EditClaimRequest.CategoryId),
       x => x == OperationType.Replace,
       new()
@@ -106,7 +106,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region DepartmentId
 
-    await AddFailureForPropertyIfAsync(
+    await AddFailureForPropertyIfNotAsync(
       nameof(EditClaimRequest.DepartmentId),
       x => x == OperationType.Replace,
       new()
@@ -122,7 +122,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region Priority
 
-    AddFailureForPropertyIf(
+    AddFailureForPropertyIfNot(
       nameof(EditClaimRequest.Priority),
       x => x == OperationType.Replace,
       new()
@@ -138,7 +138,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region Status
 
-    AddFailureForPropertyIf(
+    AddFailureForPropertyIfNot(
       nameof(EditClaimRequest.Status),
       x => x == OperationType.Replace,
       new()
@@ -154,7 +154,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region Deadline
 
-    AddFailureForPropertyIf(
+    AddFailureForPropertyIfNot(
       nameof(EditClaimRequest.Deadline),
       x => x == OperationType.Replace,
       new()
@@ -169,7 +169,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region ResponsibleUserId
 
-    await AddFailureForPropertyIfAsync(
+    await AddFailureForPropertyIfNotAsync(
       nameof(EditClaimRequest.ResponsibleUserId),
       x => x == OperationType.Replace,
       new()
@@ -185,7 +185,7 @@ public class EditClaimValidator : BaseEditRequestValidator<EditClaimRequest>, IE
 
     #region ManagerUserId
 
-    await AddFailureForPropertyIfAsync(
+    await AddFailureForPropertyIfNotAsync(
       nameof(EditClaimRequest.ManagerUserId),
       x => x == OperationType.Replace,
       new()

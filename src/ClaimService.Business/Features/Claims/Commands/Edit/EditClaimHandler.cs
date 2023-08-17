@@ -41,7 +41,7 @@ public class EditClaimHandler : IRequestHandler<EditClaimCommand, Unit>
     DbClaim claim = await _provider.Claims.FirstOrDefaultAsync(c => c.Id == command.ClaimId && c.Status != (int)ClaimStatus.Closed, ct);
     if (claim is null)
     {
-      throw new BadRequestException("No claim with provided id was found");
+      throw new NotFoundException("No claim with provided id was found");
     }
 
     Guid editorId = _httpContextAccessor.HttpContext.GetUserId();

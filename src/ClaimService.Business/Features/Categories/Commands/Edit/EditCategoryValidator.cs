@@ -4,8 +4,6 @@ using LT.DigitalOffice.Kernel.Validators;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Business.Features.Categories.Commands.Edit;
 
@@ -20,20 +18,20 @@ public class EditCategoryValidator : BaseEditRequestValidator<EditCategoryReques
 
     #region Paths
 
-    AddСorrectPaths(new()
+    AddCorrectPaths(new()
     {
       nameof(EditCategoryRequest.Name),
       nameof(EditCategoryRequest.Color)
     });
 
-    AddСorrectOperations(nameof(EditCategoryRequest.Name), new() { OperationType.Replace });
-    AddСorrectOperations(nameof(EditCategoryRequest.Color), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditCategoryRequest.Name), new() { OperationType.Replace });
+    AddCorrectOperations(nameof(EditCategoryRequest.Color), new() { OperationType.Replace });
 
     #endregion
 
     #region Name
 
-    AddFailureForPropertyIf(
+    AddFailureForPropertyIfNot(
       nameof(EditCategoryRequest.Name),
       x => x == OperationType.Replace,
       new()
@@ -47,7 +45,7 @@ public class EditCategoryValidator : BaseEditRequestValidator<EditCategoryReques
 
     #region Color
 
-    AddFailureForPropertyIf(
+    AddFailureForPropertyIfNot(
       nameof(EditCategoryRequest.Color),
       x => x == OperationType.Replace,
       new()
