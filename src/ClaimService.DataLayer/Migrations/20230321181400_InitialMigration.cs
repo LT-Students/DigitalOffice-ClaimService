@@ -58,15 +58,38 @@ public class CreateClaims : Migration
       });
   }
 
+  public void CreateCommentsTable(MigrationBuilder migrationBuilder)
+  {
+    migrationBuilder.CreateTable(
+      name: DbClaimComment.TableName,
+      columns: table => new
+      {
+        Id = table.Column<Guid>(nullable: false),
+        ClaimId = table.Column<Guid>(nullable: false),
+        Content = table.Column<string>(nullable: true),
+        IsActive = table.Column<bool>(nullable: false),
+        CreatedBy = table.Column<Guid>(nullable: false),
+        CreatedAtUtc = table.Column<DateTime>(nullable: false),
+        ModifiedBy = table.Column<Guid>(nullable: true),
+        ModifiedAtUtc = table.Column<DateTime>(nullable: true)
+      },
+      constraints: table =>
+      {
+        table.PrimaryKey($"PK_{DbClaimComment.TableName}", c => c.Id);
+      });
+  }
+
   protected override void Up(MigrationBuilder migrationBuilder)
   {
     CreateClaimsTable(migrationBuilder);
     CreateCategoriesTable(migrationBuilder);
+    CreateCommentsTable(migrationBuilder);
   }
 
   protected override void Down(MigrationBuilder migrationBuilder)
   {
     migrationBuilder.DropTable(DbClaim.TableName);
     migrationBuilder.DropTable(DbCategory.TableName);
+    migrationBuilder.DropTable(DbClaimComment.TableName);
   }
 }

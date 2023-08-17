@@ -161,8 +161,8 @@ public class Startup : BaseApiInfo
     app.UseSwagger()
     .UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint($"{_swaggerConfiguration.ServicePath}/swagger/{Version}/swagger.json", $"{Version}");
-      });
+      options.SwaggerEndpoint($"{_swaggerConfiguration.ServicePath}/swagger/{Version}/swagger.json", $"{Version}");
+    });
 
     app.UseMiddleware<TokenMiddleware>();
 
