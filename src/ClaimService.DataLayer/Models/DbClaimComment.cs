@@ -20,7 +20,7 @@ public class DbClaimComment
   public DbClaim Claim { get; set; }
 }
 
-public class DbEventCommentsConfiguration : IEntityTypeConfiguration<DbClaimComment>
+public class DbClaimCommentsConfiguration : IEntityTypeConfiguration<DbClaimComment>
 {
   public void Configure(EntityTypeBuilder<DbClaimComment> builder)
   {
