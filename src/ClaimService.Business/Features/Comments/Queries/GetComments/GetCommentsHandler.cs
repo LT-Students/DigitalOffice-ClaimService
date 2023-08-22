@@ -43,14 +43,9 @@ public class GetCommentsHandler : IRequestHandler<GetCommentsQuery, FindResult<C
     GetCommentsParameters parameters = query.Parameters;
     if (query.Parameters.IsAscendingSort.HasValue)
     {
-      if (parameters.IsAscendingSort.Value)
-      {
-        comments = comments.OrderBy(c => c.CreatedAtUtc);
-      }
-      else
-      {
-        comments = comments.OrderByDescending(c => c.CreatedAtUtc);
-      }
+      comments = parameters.IsAscendingSort.Value
+        ? comments.OrderBy(c => c.CreatedAtUtc)
+        : comments = comments.OrderByDescending(c => c.CreatedAtUtc);
     }
 
     return (
