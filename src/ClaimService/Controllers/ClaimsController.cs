@@ -43,7 +43,7 @@ public class ClaimsController : ControllerBase
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status403Forbidden)]
   public async Task<IActionResult> CreateAsync(
-    [FromBody] CreateClaimCommand command,
+    [Required][FromBody] CreateClaimCommand command,
     CancellationToken ct)
   {
     return Created("/claims", await _mediator.Send(command, ct));
@@ -62,8 +62,8 @@ public class ClaimsController : ControllerBase
   [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status403Forbidden)]
   [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
   public async Task<IActionResult> EditAsync(
-    [FromRoute] Guid claimId,
-    [FromBody] JsonPatchDocument<EditClaimRequest> patch,
+    [Required][FromRoute] Guid claimId,
+    [Required][FromBody] JsonPatchDocument<EditClaimRequest> patch,
     CancellationToken ct)
   {
     return Ok(await _mediator.Send(new EditClaimCommand { ClaimId = claimId, Patch = patch }, ct));
@@ -93,7 +93,7 @@ public class ClaimsController : ControllerBase
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
   public async Task<IActionResult> GetAsync(
-    [FromRoute] GetClaimQuery query,
+    [Required][FromRoute] GetClaimQuery query,
     CancellationToken ct)
   {
     return Ok(await _mediator.Send(query, ct));
@@ -113,7 +113,7 @@ public class ClaimsController : ControllerBase
   [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
   public async Task<IActionResult> UpdateAsync(
     [Required][FromRoute] Guid claimId,
-    [Required] UpdateClaimRequest request,
+    [Required][FromBody] UpdateClaimRequest request,
     CancellationToken ct)
   {
     return Ok(await _mediator.Send(new UpdateClaimCommand

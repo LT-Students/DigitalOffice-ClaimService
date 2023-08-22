@@ -34,7 +34,7 @@ public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, Unit
     // TODO: add right check.
     if (!await _accessValidator.IsAdminAsync(senderId))
     {
-      throw new ForbiddenException("Not enough rights to edit claim category.");
+      throw new ForbiddenException("Not enough rights to edit category.");
     }
 
     DbCategory category = await _provider.Categories.FirstAsync(c => c.Id == command.CategoryId, ct);

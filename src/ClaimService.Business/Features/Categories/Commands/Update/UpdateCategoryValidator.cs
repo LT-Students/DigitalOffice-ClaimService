@@ -15,6 +15,11 @@ public class UpdateCategoryValidator : AbstractValidator<UpdateCategoryCommand>
       .WithErrorCode("404")
       .WithMessage("No category with provided id exist.");
 
+    RuleFor(r => r)
+      .MustAsync((command, ct) =>
+        provider.Categories.AnyAsync(c => c.Id != command.CategoryId && c.Name != command.Request.Name, ct))
+      .WithMessage("Category with provided name already exists.");
+
     RuleFor(r => r.Request.Color)
       .IsInEnum()
       .WithMessage("No such color.");

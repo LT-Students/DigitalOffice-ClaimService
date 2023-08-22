@@ -11,7 +11,6 @@ public record CreateCategoryCommand : IRequest<Guid>
   /// Name of the category.
   /// </summary>
   [Required]
-  [MinLength(1, ErrorMessage = "Name must be not empty.")]
   [MaxLength(20, ErrorMessage = "Name must be shorter than 20 symbols.")]
   public string Name { get; set; }
 

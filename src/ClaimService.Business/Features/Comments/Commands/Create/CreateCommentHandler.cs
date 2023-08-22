@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LT.DigitalOffice.ClaimService.Business.Features.Comments.Commands.Create;
 
-public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Unit>
+public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Guid?>
 {
   private readonly IDataProvider _provider;
   private readonly IHttpContextAccessor _httpContextAccessor;
@@ -22,20 +22,20 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Unit>
     _httpContextAccessor = httpContextAccessor;
   }
 
-  public async Task<Unit> Handle(CreateCommentCommand command, CancellationToken ct)
+  public Task<Guid?> Handle(CreateCommentCommand command, CancellationToken ct)
   {
     Guid creatorId = _httpContextAccessor.HttpContext.GetUserId();
 
-    await CreateAsync(Map(command, creatorId));
-
-    return Unit.Value;
+    return CreateAsync(Map(command, creatorId));
   }
 
-  private async Task CreateAsync(DbClaimComment comment)
+  private async Task<Guid?> CreateAsync(DbClaimComment comment)
   {
     _provider.Comments.Add(comment);
 
     await _provider.SaveAsync();
+
+    return comment.Id;
   }
 
   private DbClaimComment Map(CreateCommentCommand command, Guid creatorId)

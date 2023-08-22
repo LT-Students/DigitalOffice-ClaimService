@@ -10,7 +10,6 @@ public record UpdateClaimRequest
   /// Name of the claim.
   /// </summary>
   [Required]
-  [MinLength(1, ErrorMessage = "Name must be longer than 1 symbol.")]
   [MaxLength(50, ErrorMessage = "Name must be shorter than 50 symbols.")]
   public string Name { get; set; }
 
@@ -18,7 +17,6 @@ public record UpdateClaimRequest
   /// Content of the claim.
   /// </summary>
   [Required]
-  [MinLength(1, ErrorMessage = "Content must be longer than 1 symbol.")]
   [MaxLength(500, ErrorMessage = "Content must be shorter than 500 symbols.")]
   public string Content { get; set; }
 
