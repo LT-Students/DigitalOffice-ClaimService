@@ -59,6 +59,7 @@ public class CategoriesController : ControllerBase
   [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status403Forbidden)]
+  [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
   public async Task<IActionResult> EditAsync(
     [FromRoute][Required] Guid categoryId,
     [FromBody][Required] JsonPatchDocument<EditCategoryRequest> patch,
