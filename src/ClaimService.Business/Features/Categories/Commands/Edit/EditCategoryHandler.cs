@@ -40,7 +40,7 @@ public class EditCategoryHandler : IRequestHandler<EditCategoryCommand, Unit>
     DbCategory category = await _provider.Categories.FirstOrDefaultAsync(c => c.Id == command.CategoryId && c.IsActive, ct);
     if (category is null)
     {
-      throw new BadRequestException("No category with provided wid as found.");
+      throw new NotFoundException("No category with provided id was found.");
     }
 
     Guid editorId = _httpContextAccessor.HttpContext.GetUserId();

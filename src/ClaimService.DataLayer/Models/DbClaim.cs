@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using System.Collections.Generic;
 
 namespace LT.DigitalOffice.ClaimService.DataLayer.Models;
 
@@ -25,6 +26,7 @@ public class DbClaim
   public DateTime? ModifiedAtUtc { get; set; }
 
   public DbCategory Category { get; set; }
+  public ICollection<DbClaimComment> Comments { get; set; } = new List<DbClaimComment>();
 }
 
 public class DbClaimConfiguration : IEntityTypeConfiguration<DbClaim>
@@ -36,5 +38,7 @@ public class DbClaimConfiguration : IEntityTypeConfiguration<DbClaim>
     builder.HasKey(c => c.Id);
 
     builder.HasOne(c => c.Category).WithMany(c => c.Claims);
+
+    builder.HasMany(c => c.Comments).WithOne(c => c.Claim);
   }
 }

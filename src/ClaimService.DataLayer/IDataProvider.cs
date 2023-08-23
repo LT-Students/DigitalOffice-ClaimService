@@ -11,4 +11,5 @@ public interface IDataProvider : IBaseDataProvider
 {
   public DbSet<DbClaim> Claims { get; set; }
   public DbSet<DbCategory> Categories { get; set; }
+  public DbSet<DbClaimComment> Comments { get; set; }
 }
